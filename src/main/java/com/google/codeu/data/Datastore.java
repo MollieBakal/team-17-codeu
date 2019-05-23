@@ -57,6 +57,7 @@ public class Datastore {
 
     Query query =
         new Query("Message")
+            //The setFilter line was here originally but not in the Step 3 provided code
             .setFilter(new Query.FilterPredicate("user", FilterOperator.EQUAL, user))
             .addSort("timestamp", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
@@ -65,6 +66,10 @@ public class Datastore {
       try {
         String idString = entity.getKey().getName();
         UUID id = UUID.fromString(idString);
+
+        /*This user string was added for Step 3 of the Public Feed project portion*/
+        String user = (String) entity.getProperty("user");
+
         String text = (String) entity.getProperty("text");
         long timestamp = (long) entity.getProperty("timestamp");
 
