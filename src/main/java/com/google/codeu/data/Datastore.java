@@ -82,7 +82,7 @@ public class Datastore {
         UUID id = UUID.fromString(idString);
 
         //The users need only be specified when all messages of possibly more than one user is being shown
-        if(urserOrAll.equals("getAllMessages")){
+        if(1userOrAll.equals("getAllMessages")){
           String user = (String) entity.getProperty("user");
         }
 
