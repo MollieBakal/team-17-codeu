@@ -62,13 +62,29 @@ public class Datastore {
             .addSort("timestamp", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
 
+    return messageHelper("getMessages", messages, query);
+  }
+
+  public List<Message> getAllMessages(){
+    List<Message> messages = new ArrayList<>();
+
+    Query query = new Query("Message")
+      .addSort("timestamp", SortDirection.DESCENDING);
+    PreparedQuery results = datastore.prepare(query);
+
+    return messageHelper("getAllMessages", messages, query);
+ }
+  
+  public List<Message> messageHelper(String urserOrAll, List<Message> messages, Query query){
     for (Entity entity : results.asIterable()) {
       try {
         String idString = entity.getKey().getName();
         UUID id = UUID.fromString(idString);
 
-        /*This user string was added for Step 3 of the Public Feed project portion*/
-        String user = (String) entity.getProperty("user");
+        //The users need only be specified when all messages of possibly more than one user is being shown
+        if(urserOrAll.equals("getAllMessages")){
+          String user = (String) entity.getProperty("user");
+        }
 
         String text = (String) entity.getProperty("text");
         long timestamp = (long) entity.getProperty("timestamp");
