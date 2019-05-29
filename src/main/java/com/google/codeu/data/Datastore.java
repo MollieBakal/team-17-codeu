@@ -75,7 +75,7 @@ public class Datastore {
     return messageHelper("getAllMessages", messages, query);
  }
   
-  public List<Message> messageHelper(String urserOrAll, List<Message> messages, Query query){
+  public List<Message> messageHelper(String 1userOrAll, List<Message> messages, Query query){
     for (Entity entity : results.asIterable()) {
       try {
         String idString = entity.getKey().getName();
