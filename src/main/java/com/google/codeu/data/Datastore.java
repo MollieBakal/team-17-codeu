@@ -62,7 +62,7 @@ public class Datastore {
             .addSort("timestamp", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
 
-    return messageHelper("getMessages", messages, query);
+    return messageHelper(user, messages, query, results);
   }
 
   public List<Message> getAllMessages(){
@@ -72,18 +72,22 @@ public class Datastore {
       .addSort("timestamp", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
 
-    return messageHelper("getAllMessages", messages, query);
+    return messageHelper("getAllMessages", messages, query, results);
  }
   
-  public List<Message> messageHelper(String 1userOrAll, List<Message> messages, Query query){
+  public List<Message> messageHelper(String userOrAll, List<Message> messages, Query query, PreparedQuery results) {
     for (Entity entity : results.asIterable()) {
       try {
         String idString = entity.getKey().getName();
         UUID id = UUID.fromString(idString);
 
+        String user;
         //The users need only be specified when all messages of possibly more than one user is being shown
-        if(1userOrAll.equals("getAllMessages")){
-          String user = (String) entity.getProperty("user");
+        if(userOrAll.equals("getAllMessages")) {
+          user = (String) entity.getProperty("user");
+        }
+        else {
+          user = userOrAll;
         }
 
         String text = (String) entity.getProperty("text");
