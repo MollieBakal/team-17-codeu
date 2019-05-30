@@ -57,14 +57,39 @@ public class Datastore {
 
     Query query =
         new Query("Message")
+            //The setFilter line was here originally but not in the Step 3 provided code
             .setFilter(new Query.FilterPredicate("user", FilterOperator.EQUAL, user))
             .addSort("timestamp", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
 
+    return messageHelper(user, messages, query, results);
+  }
+
+  public List<Message> getAllMessages(){
+    List<Message> messages = new ArrayList<>();
+
+    Query query = new Query("Message")
+      .addSort("timestamp", SortDirection.DESCENDING);
+    PreparedQuery results = datastore.prepare(query);
+
+    return messageHelper("getAllMessages", messages, query, results);
+ }
+  
+  public List<Message> messageHelper(String userOrAll, List<Message> messages, Query query, PreparedQuery results) {
     for (Entity entity : results.asIterable()) {
       try {
         String idString = entity.getKey().getName();
         UUID id = UUID.fromString(idString);
+
+        String user;
+        //The users need only be specified when all messages of possibly more than one user is being shown
+        if(userOrAll.equals("getAllMessages")) {
+          user = (String) entity.getProperty("user");
+        }
+        else {
+          user = userOrAll;
+        }
+
         String text = (String) entity.getProperty("text");
         long timestamp = (long) entity.getProperty("timestamp");
 
