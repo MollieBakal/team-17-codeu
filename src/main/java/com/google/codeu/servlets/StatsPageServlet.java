@@ -34,10 +34,14 @@ public class StatsPageServlet extends HttpServlet{
 
     int messageCount = datastore.getTotalMessageCount();
     long averageMessageLength = datastore.getAverageMessageLength();
+    int longestMessage = datastore.getLongestMessage();
 
     JsonObject jsonObject = new JsonObject();
+
     jsonObject.addProperty("messageCount", messageCount);
     jsonObject.addProperty("averageMessageLength", averageMessageLength);
+    jsonObject.addProperty("longestMessage", longestMessage);
+    
     response.getOutputStream().println(jsonObject.toString());
   }
 }

@@ -128,5 +128,18 @@ public long getAverageMessageLength(){
 
 }
 
+public int getLongestMessage(){
+  Query query = new Query("Message");
+  PreparedQuery results = datastore.prepare(query);
+
+  int maxLength = 0;
+  for (Entity entity : results.asIterable()) {
+    String s = (String) entity.getProperty("text");
+    if (s.length() > maxLength) {
+              maxLength = s.length();
+          }
+  }
+  return maxLength; 
+}
 
 }
