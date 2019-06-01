@@ -8,7 +8,12 @@
         statsContainer.innerHTML = '';
 
         const messageCountElement = buildStatElement('Message count: ' + stats.messageCount);
+        const avgMessageLengthElement = buildStatElement('Average message length: ' + stats.averageMessageLength + " characters");
+        const longestMessageElement = buildStatElement('Longest message length: ' + stats.longestMessage + " characters");
+        
         statsContainer.appendChild(messageCountElement);
+        statsContainer.appendChild(avgMessageLengthElement);
+        statsContainer.appendChild(longestMessageElement);
       });
     }
 

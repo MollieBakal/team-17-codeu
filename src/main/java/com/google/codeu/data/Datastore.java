@@ -112,4 +112,34 @@ public int getTotalMessageCount(){
   PreparedQuery results = datastore.prepare(query);
   return results.countEntities(FetchOptions.Builder.withLimit(1000));
 }
+
+
+public long getAverageMessageLength(){
+  Query query = new Query("Message");
+  PreparedQuery results = datastore.prepare(query);
+
+  long totalChars=0;
+  for (Entity entity : results.asIterable()) {
+    String text = (String) entity.getProperty("text");
+    totalChars+= text.length();
+  }
+  long tot = getTotalMessageCount();
+  return totalChars/tot;
+
+}
+
+public int getLongestMessage(){
+  Query query = new Query("Message");
+  PreparedQuery results = datastore.prepare(query);
+
+  int maxLength = 0;
+  for (Entity entity : results.asIterable()) {
+    String s = (String) entity.getProperty("text");
+    if (s.length() > maxLength) {
+              maxLength = s.length();
+          }
+  }
+  return maxLength; 
+}
+
 }
