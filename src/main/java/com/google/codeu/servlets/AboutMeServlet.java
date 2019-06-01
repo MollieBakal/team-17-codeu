@@ -21,6 +21,9 @@ import com.google.codeu.data.Datastore;
 
 import com.google.codeu.data.User;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
+
 
 /**
 
