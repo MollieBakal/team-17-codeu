@@ -23,6 +23,8 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.FetchOptions;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -57,14 +59,39 @@ public class Datastore {
 
     Query query =
         new Query("Message")
+            //The setFilter line was here originally but not in the Step 3 provided code
             .setFilter(new Query.FilterPredicate("user", FilterOperator.EQUAL, user))
             .addSort("timestamp", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
 
+    return messageHelper(user, messages, query, results);
+  }
+
+  public List<Message> getAllMessages(){
+    List<Message> messages = new ArrayList<>();
+
+    Query query = new Query("Message")
+      .addSort("timestamp", SortDirection.DESCENDING);
+    PreparedQuery results = datastore.prepare(query);
+
+    return messageHelper("getAllMessages", messages, query, results);
+ }
+  
+  public List<Message> messageHelper(String userOrAll, List<Message> messages, Query query, PreparedQuery results) {
     for (Entity entity : results.asIterable()) {
       try {
         String idString = entity.getKey().getName();
         UUID id = UUID.fromString(idString);
+
+        String user;
+        //The users need only be specified when all messages of possibly more than one user is being shown
+        if(userOrAll.equals("getAllMessages")) {
+          user = (String) entity.getProperty("user");
+        }
+        else {
+          user = userOrAll;
+        }
+
         String text = (String) entity.getProperty("text");
         long timestamp = (long) entity.getProperty("timestamp");
 
@@ -79,6 +106,7 @@ public class Datastore {
 
     return messages;
   }
+
  /** Stores the User in Datastore. */
 
  public void storeUser(User user) {
@@ -132,4 +160,43 @@ public class Datastore {
   return user;
 
  }
+
+  
+ /** Returns the total number of messages for all users. */
+public int getTotalMessageCount(){
+  Query query = new Query("Message");
+  PreparedQuery results = datastore.prepare(query);
+  return results.countEntities(FetchOptions.Builder.withLimit(1000));
+}
+
+
+public long getAverageMessageLength(){
+  Query query = new Query("Message");
+  PreparedQuery results = datastore.prepare(query);
+
+  long totalChars=0;
+  for (Entity entity : results.asIterable()) {
+    String text = (String) entity.getProperty("text");
+    totalChars+= text.length();
+  }
+  long tot = getTotalMessageCount();
+  return totalChars/tot;
+
+}
+
+public int getLongestMessage(){
+  Query query = new Query("Message");
+  PreparedQuery results = datastore.prepare(query);
+
+  int maxLength = 0;
+  for (Entity entity : results.asIterable()) {
+    String s = (String) entity.getProperty("text");
+    if (s.length() > maxLength) {
+              maxLength = s.length();
+          }
+  }
+  return maxLength;
+  
+}
+
 }
