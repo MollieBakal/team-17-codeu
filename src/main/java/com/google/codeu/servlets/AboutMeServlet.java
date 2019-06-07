@@ -110,7 +110,9 @@ public class AboutMeServlet extends HttpServlet {
 
 
     String userEmail = userService.getCurrentUser().getEmail();
-    String aboutMe = Jsoup.clean(request.getParameter("about-me"), Whitelist.none());
+    Whitelist whitelist = Whitelist.simpleText();
+    whitelist.addTags("ins", "strike", "sub", "sup");
+    String aboutMe = Jsoup.clean(request.getParameter("about-me"), whitelist);
 
 
     User user = new User(userEmail, aboutMe);
