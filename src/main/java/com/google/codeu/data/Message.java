@@ -17,6 +17,7 @@
 package com.google.codeu.data;
 
 import java.util.UUID;
+import java.util.List;
 
 /** A single message posted by a user. */
 public class Message {
@@ -56,4 +57,21 @@ public class Message {
   public long getTimestamp() {
     return timestamp;
   }
+}
+
+public class Question extends Message{
+    private List<Message> answers = new List<Message>();
+    
+    public Question(String user, String text) {
+        super(user, text);
+    }
+                    
+    public Question(UUID id, String user, String text, long timestamp) {
+        super(id, user, text, timestamp);
+    }
+    
+    public getAnswers(){
+        return answers;
+    }
+    
 }
