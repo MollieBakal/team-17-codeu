@@ -22,11 +22,11 @@ public class Question extends Message{
         this.answers.add(answer);
     }
     
-    public String getList(){
+    public String getAccess(){
         return access;
     }
     
-    public void setList(String stuff){
+    public void setAccess(String stuff){
         this.access = stuff;
     }
 }

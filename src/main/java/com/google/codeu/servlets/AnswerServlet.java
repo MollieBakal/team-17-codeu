@@ -17,11 +17,20 @@ import org.jsoup.safety.Whitelist;
 @WebServlet("/answers")
 public class AnswerServlet extends HttpServlet{
     //
+    //@Override
+    //public void doGet(HttpServletRequest request, HttpServletResponse response){
+        
+    //}
+    private Datastore datastore;
+    
+    
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response){
+    
+    public void init() {
+        
+        datastore = new Datastore();
         
     }
-    
     
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException{
@@ -37,8 +46,10 @@ public class AnswerServlet extends HttpServlet{
         String text = Jsoup.clean(request.getParameter("text"), whitelist);
         
         Message message = new Message(user, text);
-        
-        
+        String ID = request.getParameter("parent");
+        Question parent = datastore.getIDMessage(ID);
+        parent.addAnswer(message);
+        response.sendRedirect("/user-page.html?user=" + user);
         
 
     }
