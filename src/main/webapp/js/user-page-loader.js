@@ -91,10 +91,10 @@ function fetchQuestions() {
                                                    messageDiv.appendChild(buildMessageDiv(answer))
                                                    });
                            
-                           //const formdiv = document.createElement('div');
+                           const formdiv = document.createElement('div');
                            //This isn't working yet; adding it so I have something to work from later.
-                           //formdiv.innerHTML = "<form id=\"message-form\" action=\"/messages\" method=\"POST\" class=\"hidden\" name= \"" + message.id + "\"> <br>Enter a new message:<br><br/><textarea name=\"text\" id=\"message-input\"></textarea><br><br/><br><input type=\"submit\" value=\"Submit\">\n                           </form>";
-                           //messageDiv.appendChild(formdiv);
+                           formdiv.innerHTML = formdiv.innerHTML + document.getElementById('answerhead').innerHTML + '<input type="hidden" name="explore" value = ' + message.id + '> ' + document.getElementById('formbody').innerHTML;
+                           messageDiv.appendChild(formdiv);
                            messagesContainer.appendChild(messageDiv);
                            });
           });

@@ -58,20 +58,3 @@ public class Message {
     return timestamp;
   }
 }
-
-public class Question extends Message{
-    private List<Message> answers = new List<Message>();
-    
-    public Question(String user, String text) {
-        super(user, text);
-    }
-                    
-    public Question(UUID id, String user, String text, long timestamp) {
-        super(id, user, text, timestamp);
-    }
-    
-    public getAnswers(){
-        return answers;
-    }
-    
-}
