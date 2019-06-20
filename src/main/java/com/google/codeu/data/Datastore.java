@@ -68,6 +68,15 @@ public class Datastore {
 
     return messageHelper(user, messages, query, results);
   }
+    
+    
+    public List<Message> getIDMessage(String parentID) {
+        List<Message> messages = new ArrayList<>();
+        Query query = new Query("Message").setFilter(new Query.FilterPredicate("UUID", FilterOperator.EQUAL, parentID));
+        PreparedQuery results = datastore.prepare(query);
+        String user = (String) results.asSingleEntity().getProperty("user");
+        return messageHelper(user, messages, query, results);
+    }
 
   public List<Message> getAllMessages(){
     List<Message> messages = new ArrayList<>();

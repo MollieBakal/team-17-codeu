@@ -17,6 +17,7 @@
 package com.google.codeu.data;
 
 import java.util.UUID;
+import java.util.List;
 
 /** A single message posted by a user. */
 public class Message {

@@ -72,6 +72,34 @@ function fetchMessages() {
       });
 }
 
+function fetchQuestions() {
+    const url = '/messages?user=' + parameterUsername;
+    fetch(url)
+    .then((response) => {
+          return response.json();
+          })
+    .then((messages) => {
+          const messagesContainer = document.getElementById('message-container');
+          if (messages.length == 0) {
+          messagesContainer.innerHTML = '<p>This user has no posts yet.</p>';
+          } else {
+          messagesContainer.innerHTML = '';
+          }
+          messages.forEach((message) => {
+                           const messageDiv = buildMessageDiv(message);
+                           message.answers.forEach((answer) => {
+                                                   messageDiv.appendChild(buildMessageDiv(answer))
+                                                   });
+                           
+                           const formdiv = document.createElement('div');
+                           //This isn't working yet; adding it so I have something to work from later.
+                           formdiv.innerHTML = formdiv.innerHTML + document.getElementById('answerhead').innerHTML + '<input type="hidden" name="parent" value = "' + message.id + '"> ' + document.getElementById('formbody').innerHTML;
+                           messageDiv.appendChild(formdiv);
+                           messagesContainer.appendChild(messageDiv);
+                           });
+          });
+}
+
 /**
  * Builds an element that displays the message.
  * @param {Message} message
