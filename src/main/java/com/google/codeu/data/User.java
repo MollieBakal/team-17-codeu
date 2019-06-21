@@ -1,5 +1,7 @@
 package com.google.codeu.data;
 
+import java.awt.Image;
+import java.util.UUID;
 
 public class User {
 
@@ -19,7 +21,11 @@ public class User {
     this.aboutMe = aboutMe;
     this.profilePic = profilePic;
   }
-
+  //for compatibility with datastore
+    public User(String email, String aboutMe){
+        this(UUID.randomUUID(), "", "", email, aboutMe, null);
+    }
+    
   public UUID getID(){
     return id;
   }
@@ -28,7 +34,7 @@ public class User {
     return firstName;
   }
 
-  public String getFirstName(){
+  public String getLastName(){
     return lastName;
   }
 

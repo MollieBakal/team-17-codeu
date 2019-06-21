@@ -141,7 +141,7 @@ function fetchAboutMe(){
 function buildUI() {
   setPageTitle();
   showMessageFormIfViewingSelf();
-  fetchMessages();
+  fetchQuestions();
   fetchAboutMe();
 }
 
