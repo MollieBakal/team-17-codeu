@@ -87,7 +87,7 @@ function fetchQuestions() {
           }
           messages.forEach((message) => {
                            const messageDiv = buildMessageDiv(message);
-                           message.answers.forEach((answer) => {
+                           message.tempHack.forEach((answer) => {
                                                    messageDiv.appendChild(buildMessageDiv(answer))
                                                    });
                            

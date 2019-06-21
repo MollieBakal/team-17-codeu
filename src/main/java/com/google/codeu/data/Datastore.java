@@ -28,6 +28,7 @@ import com.google.appengine.api.datastore.FetchOptions;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.Arrays;
 
 /** Provides access to the data stored in Datastore. */
 public class Datastore {
@@ -55,7 +56,7 @@ public class Datastore {
    *     message. List is sorted by time descending.
    */
   public List<Message> getMessages(String user) {
-    List<Message> messages = new ArrayList<>();
+    List<Message> messages = new ArrayList<Message>();
 
     Query query =
         new Query("Message")
@@ -68,16 +69,17 @@ public class Datastore {
   }
     
     
-    public List<Message> getIDMessage(String parentID) {
-        List<Message> messages = new ArrayList<>();
+    public Message getIDMessage(String parentID) {
+        List<Message> messages = new ArrayList<Message>();
         Query query = new Query("Message").setFilter(new Query.FilterPredicate("UUID", FilterOperator.EQUAL, parentID));
         PreparedQuery results = datastore.prepare(query);
         String user = (String) results.asSingleEntity().getProperty("user");
-        return messageHelper(user, messages, query, results);
+        messageHelper(user, messages, query, results);
+        return messages.get(0);
     }
 
   public List<Message> getAllMessages(){
-    List<Message> messages = new ArrayList<>();
+    List<Message> messages = new ArrayList<Message>();
 
     Query query = new Query("Message")
       .addSort("timestamp", SortDirection.DESCENDING);
@@ -207,5 +209,95 @@ public int getLongestMessage(){
   return maxLength;
   
 }
-
+    //And so begin the Question methods
+    /** Stores the Message in Datastore. */
+    public void storeQuestion(Question message) {
+        Entity messageEntity = new Entity("Message", message.getId().toString());
+        messageEntity.setProperty("user", message.getUser());
+        messageEntity.setProperty("text", message.getText());
+        messageEntity.setProperty("timestamp", message.getTimestamp());
+        messageEntity.setProperty("children", message.getKidsToString());
+        datastore.put(messageEntity);
+    }
+    
+    /**
+     * Gets messages posted by a specific user.
+     *
+     * @return a list of messages posted by the user, or empty list if user has never posted a
+     *     message. List is sorted by time descending.
+     */
+    public List<Question> getQuestions(String user) {
+        List<Question> messages = new ArrayList<Question>();
+        
+        Query query =
+        new Query("Message")
+        //The setFilter line was here originally but not in the Step 3 provided code
+        .setFilter(new Query.FilterPredicate("user", FilterOperator.EQUAL, user))
+        .addSort("timestamp", SortDirection.DESCENDING);
+        PreparedQuery results = datastore.prepare(query);
+        
+        return questionHelper(user, messages, query, results);
+    }
+    
+    
+    public Question getIDQuestion(String parentID) {
+        List<Question> messages = new ArrayList<Question>();
+        Query query = new Query("Message").setFilter(new Query.FilterPredicate("UUID", FilterOperator.EQUAL, parentID));
+        PreparedQuery results = datastore.prepare(query);
+        String user = (String) results.asSingleEntity().getProperty("user");
+        //UserID is unique, so this should only ever resolve to one message.
+        questionHelper(user, messages, query, results);
+        return messages.get(0);
+    }
+    
+    public List<Question> getAllQuestions(){
+        List<Question> messages = new ArrayList<Question>();
+        
+        Query query = new Query("Message")
+        .addSort("timestamp", SortDirection.DESCENDING);
+        PreparedQuery results = datastore.prepare(query);
+        
+        return questionHelper("getAllMessages", messages, query, results);
+    }
+    
+    public List<Question> questionHelper(String userOrAll, List<Question> messages, Query query, PreparedQuery results) {
+        for (Entity entity : results.asIterable()) {
+            try {
+                String idString = entity.getKey().getName();
+                UUID id = UUID.fromString(idString);
+                
+                String user;
+                //The users need only be specified when all messages of possibly more than one user is being shown
+                if(userOrAll.equals("getAllMessages")) {
+                    user = (String) entity.getProperty("user");
+                }
+                else {
+                    user = userOrAll;
+                }
+                
+                String text = (String) entity.getProperty("text");
+                long timestamp = (long) entity.getProperty("timestamp");
+                String kids = (String) entity.getProperty("children");
+                
+                Question message = new Question(id, user, text, timestamp);
+                
+                if (kids.length() > 0){
+                    List<UUID> children = new ArrayList<>();
+                    List<String> itemList = Arrays.asList(kids.split(":"));
+                    for (String childID : itemList){
+                        children.add(UUID.fromString(childID));
+                    }
+                    message.setChildren(children);
+                }
+                
+                messages.add(message);
+            } catch (Exception e) {
+                System.err.println("Error reading message.");
+                System.err.println(entity.toString());
+                e.printStackTrace();
+            }
+        }
+        
+        return messages;
+    }
 }
