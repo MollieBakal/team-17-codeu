@@ -1,21 +1,30 @@
 package com.google.codeu.data;
 
+import java.util.UUID;
+
 public class Request{
+    
+    enum state
+    {
+        pending, accepted, denied
+    }
+    
+    
 	private UUID id;
   private String requester;
   private String requestee;
   private long timestamp;
-  private int status;
+  private state status;
   //private int count;
 
-	enum state       
-	{	
-	 pending, accepted, denied
-	}
+	
 
   public Request(String requester, String requestee) {
-    this(UUID.randomUUID(), requester, requestee, System.currentTimeMillis());
-    this.status= state.pending;
+      this.id = UUID.randomUUID();
+      this.requester = requester;
+      this.requestee = requestee;
+      this.timestamp = System.currentTimeMillis();
+    this.status = state.pending;
   }
 
 } 

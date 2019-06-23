@@ -10,7 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.codeu.data.Datastore;
 import com.google.codeu.data.Message;
+import com.google.codeu.data.Question;
 import com.google.gson.Gson;
+import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Handles fetching all messages for the public feed.
@@ -34,7 +38,14 @@ public class MessageFeedServlet extends HttpServlet{
 
   response.setContentType("application/json");
   
-  List<Message> messages = datastore.getAllMessages();
+  List<Question> messages = datastore.getAllQuestions();
+       for (Question question : messages){
+           List<Message> kids = new ArrayList<>();
+           for (UUID id : question.getAnswers()){
+               kids.add(datastore.getIDMessage(id.toString()));
+           }
+           question.setHack(kids);
+       }
   Gson gson = new Gson();
   String json = gson.toJson(messages);
   

@@ -20,6 +20,7 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.codeu.data.Datastore;
 import com.google.codeu.data.Message;
+import com.google.codeu.data.Question;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.List;
@@ -29,6 +30,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
+import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Handles fetching and saving {@link Message} instances. */
 @WebServlet("/messages")
@@ -58,7 +62,14 @@ public class MessageServlet extends HttpServlet {
       return;
     }
 
-    List<Message> messages = datastore.getMessages(user);
+    List<Question> messages = datastore.getQuestions(user);
+      for (Question question : messages){
+          List<Message> kids = new ArrayList<>();
+          for (UUID id : question.getAnswers()){
+              kids.add(datastore.getIDMessage(id.toString()));
+          }
+          question.setHack(kids);
+      }
     Gson gson = new Gson();
     String json = gson.toJson(messages);
 
@@ -80,8 +91,8 @@ public class MessageServlet extends HttpServlet {
     whitelist.addTags("ins", "strike", "sub", "sup");
     String text = Jsoup.clean(request.getParameter("text"), whitelist);
 
-    Message message = new Message(user, text);
-    datastore.storeMessage(message);
+    Question message = new Question(user, text);
+    datastore.storeQuestion(message);
 
     response.sendRedirect("/user-page.html?user=" + user);
   }
