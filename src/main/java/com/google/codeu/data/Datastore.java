@@ -24,10 +24,13 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.Key;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.Iterator;
 
 import java.util.Arrays;
 
@@ -75,12 +78,36 @@ public class Datastore {
     
     
     public Message getIDMessage(String parentID) {
+        List<Question> messages = new ArrayList<Question>();
+        Query query = new Query("Message").setFilter(new Query.FilterPredicate("UUID", FilterOperator.EQUAL, parentID)).addSort("timestamp", SortDirection.DESCENDING);
+        //PreparedQuery results = datastore.prepare(query);
+        //System.out.println(results.toString());
+        Key parent = KeyFactory.createKey("Message", parentID);
+        try{
+            Entity entity = datastore.get(parent);
+            String user = (String) entity.getProperty("user");
+            String idString = entity.getKey().getName();
+            UUID id = UUID.fromString(idString);
+            //UserID is unique, so this should only ever resolve to one message.
+            String text = (String) entity.getProperty("text");
+            long timestamp = (long) entity.getProperty("timestamp");
+            Message message = new Message(id, user, text, timestamp);
+            return message;
+        }catch(Exception e){
+            System.out.println("ugh");
+            System.out.println("couldn't find it?");
+            e.printStackTrace();
+        }
+        Message thing = new Message("nobody", "debug");
+        return thing;
+        /*
         List<Message> messages = new ArrayList<Message>();
         Query query = new Query("Message").setFilter(new Query.FilterPredicate("UUID", FilterOperator.EQUAL, parentID));
         PreparedQuery results = datastore.prepare(query);
         String user = (String) results.asSingleEntity().getProperty("user");
         messageHelper(user, messages, query, results);
         return messages.get(0);
+         */
     }
 
   public List<Message> getAllMessages(){
@@ -181,20 +208,28 @@ public class Datastore {
  /** Returns the total number of messages for all users. */
 public int getTotalMessageCount(){
   Query query = new Query("Message");
+  Query query2 = new Query("Question");
   PreparedQuery results = datastore.prepare(query);
-  return results.countEntities(FetchOptions.Builder.withLimit(1000));
+    PreparedQuery results2 = datastore.prepare(query2);
+  return results.countEntities(FetchOptions.Builder.withLimit(1000)) + results2.countEntities(FetchOptions.Builder.withLimit(1000));
 }
 
 
 public long getAverageMessageLength(){
   Query query = new Query("Message");
+    Query query2 = new Query("Question");
   PreparedQuery results = datastore.prepare(query);
+    PreparedQuery results2 = datastore.prepare(query2);
 
   long totalChars=0;
   for (Entity entity : results.asIterable()) {
     String text = (String) entity.getProperty("text");
     totalChars+= text.length();
   }
+    for (Entity entity : results2.asIterable()) {
+        String text = (String) entity.getProperty("text");
+        totalChars+= text.length();
+    }
   long tot = getTotalMessageCount();
   return totalChars/tot;
 
@@ -202,7 +237,9 @@ public long getAverageMessageLength(){
 
 public int getLongestMessage(){
   Query query = new Query("Message");
+    Query query2 = new Query("Question");
   PreparedQuery results = datastore.prepare(query);
+    PreparedQuery results2 = datastore.prepare(query2);
 
   int maxLength = 0;
   for (Entity entity : results.asIterable()) {
@@ -211,6 +248,12 @@ public int getLongestMessage(){
               maxLength = s.length();
           }
   }
+    for (Entity entity : results2.asIterable()) {
+        String s = (String) entity.getProperty("text");
+        if (s.length() > maxLength) {
+            maxLength = s.length();
+        }
+    }
   return maxLength;
   
 }
@@ -218,7 +261,7 @@ public int getLongestMessage(){
     //And so begin the Question methods
     /** Stores the Message in Datastore. */
     public void storeQuestion(Question message) {
-        Entity messageEntity = new Entity("Message", message.getId().toString());
+        Entity messageEntity = new Entity("Question", message.getId().toString());
         messageEntity.setProperty("user", message.getUser());
         messageEntity.setProperty("text", message.getText());
         messageEntity.setProperty("timestamp", message.getTimestamp());
@@ -236,7 +279,7 @@ public int getLongestMessage(){
         List<Question> messages = new ArrayList<Question>();
         
         Query query =
-        new Query("Message")
+        new Query("Question")
         //The setFilter line was here originally but not in the Step 3 provided code
         .setFilter(new Query.FilterPredicate("user", FilterOperator.EQUAL, user))
         .addSort("timestamp", SortDirection.DESCENDING);
@@ -248,18 +291,45 @@ public int getLongestMessage(){
     
     public Question getIDQuestion(String parentID) {
         List<Question> messages = new ArrayList<Question>();
-        Query query = new Query("Message").setFilter(new Query.FilterPredicate("UUID", FilterOperator.EQUAL, parentID));
-        PreparedQuery results = datastore.prepare(query);
-        String user = (String) results.asSingleEntity().getProperty("user");
-        //UserID is unique, so this should only ever resolve to one message.
-        questionHelper(user, messages, query, results);
-        return messages.get(0);
+        Query query = new Query("Question").setFilter(new Query.FilterPredicate("UUID", FilterOperator.EQUAL, parentID)).addSort("timestamp", SortDirection.DESCENDING);
+        //PreparedQuery results = datastore.prepare(query);
+        //System.out.println(results.toString());
+        Key parent = KeyFactory.createKey("Question", parentID);
+        try{
+            Entity entity = datastore.get(parent);
+            String user = (String) entity.getProperty("user");
+            String idString = entity.getKey().getName();
+            UUID id = UUID.fromString(idString);
+            //UserID is unique, so this should only ever resolve to one message.
+            String text = (String) entity.getProperty("text");
+            long timestamp = (long) entity.getProperty("timestamp");
+            String kids = (String) entity.getProperty("children");
+            
+            Question message = new Question(id, user, text, timestamp);
+            
+            if (kids.length() > 0){
+                List<UUID> children = new ArrayList<>();
+                List<String> itemList = Arrays.asList(kids.split(":"));
+                for (String childID : itemList){
+                    children.add(UUID.fromString(childID));
+                }
+                message.setChildren(children);
+            }
+            return message;
+        }catch(Exception e){
+            System.out.println("ugh");
+            System.out.println("couldn't find it?");
+            e.printStackTrace();
+        }
+        
+        Question thing = new Question("nobody", "debug");
+        return thing;
     }
     
     public List<Question> getAllQuestions(){
         List<Question> messages = new ArrayList<Question>();
         
-        Query query = new Query("Message")
+        Query query = new Query("Question")
         .addSort("timestamp", SortDirection.DESCENDING);
         PreparedQuery results = datastore.prepare(query);
         
@@ -286,12 +356,17 @@ public int getLongestMessage(){
                 String kids = (String) entity.getProperty("children");
                 
                 Question message = new Question(id, user, text, timestamp);
-                
+                if (kids == null){
+                    kids = "";
+                }
+                System.out.println(kids);
+                System.out.println(kids.length());
                 if (kids.length() > 0){
                     List<UUID> children = new ArrayList<>();
                     List<String> itemList = Arrays.asList(kids.split(":"));
-                    for (String childID : itemList){
-                        children.add(UUID.fromString(childID));
+                    for (int i = 0; i < itemList.size(); i++){
+                        System.out.println(itemList.get(i));
+                        children.add(UUID.fromString(itemList.get(i)));
                     }
                     message.setChildren(children);
                 }
@@ -309,7 +384,7 @@ public int getLongestMessage(){
 
 public Set<String> getUsers(){
   Set<String> users = new HashSet<>();
-  Query query = new Query("Message");
+  Query query = new Query("Question");
   PreparedQuery results = datastore.prepare(query);
   for(Entity entity : results.asIterable()) {
     users.add((String) entity.getProperty("user"));
