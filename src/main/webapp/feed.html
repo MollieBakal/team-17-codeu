@@ -11,6 +11,18 @@
 <script>buildUI();</script>
 
 </head>
+<script id="answerhead" type="text/html">
+    <form id="answer-form" action="/answers" method="POST">
+    </script>
+<script id="formbody" type="text/html">
+    
+    Enter a new message:
+    <br/>
+    <textarea name="text" id="message-input"></textarea>
+    <br/>
+    <input type="submit" value="Submit">
+    </form>
+    </script>
 <body onload="buildUI()">
  <div id="content">
   <h1>Message Feed</h1>

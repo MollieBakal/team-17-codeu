@@ -86,7 +86,7 @@ function fetchQuestions() {
           messagesContainer.innerHTML = '';
           }
           messages.forEach((message) => {
-                           const messageDiv = buildMessageDiv(message);
+                           const messageDiv = buildAnonDiv(message);
                            message.tempHack.forEach((answer) => {
                                                    messageDiv.appendChild(buildMessageDiv(answer))
                                                    });
@@ -123,6 +123,22 @@ function buildMessageDiv(message) {
   return messageDiv;
 }
 
+function buildAnonDiv(message) {
+    const headerDiv = document.createElement('div');
+    headerDiv.classList.add('message-header');
+    headerDiv.appendChild(document.createTextNode(new Date(message.timestamp)));
+    
+    const bodyDiv = document.createElement('div');
+    bodyDiv.classList.add('message-body');
+    bodyDiv.innerHTML = message.text;
+    
+    const messageDiv = document.createElement('div');
+    messageDiv.classList.add('message-div');
+    messageDiv.appendChild(headerDiv);
+    messageDiv.appendChild(bodyDiv);
+    
+    return messageDiv;
+}
 
 function fetchAboutMe(){
     const url = '/about?user=' + parameterUsername;
