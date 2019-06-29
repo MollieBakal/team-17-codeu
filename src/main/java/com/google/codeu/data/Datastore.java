@@ -155,11 +155,11 @@ public class Datastore {
  public void storeUser(User user) {
 
   Entity userEntity = new Entity("User", user.getEmail());
-
   userEntity.setProperty("email", user.getEmail());
-
   userEntity.setProperty("aboutMe", user.getAboutMe());
-
+     userEntity.setProperty("firstName", user.getFirstName());
+     userEntity.setProperty("lastName", user.getLastName());
+     userEntity.setProperty("friends", user.getFriendsToString());
   datastore.put(userEntity);
 
  }
@@ -176,30 +176,16 @@ public class Datastore {
 
  public User getUser(String email) {
 
- 
-
   Query query = new Query("User")
-
     .setFilter(new Query.FilterPredicate("email", FilterOperator.EQUAL, email));
-
   PreparedQuery results = datastore.prepare(query);
-
   Entity userEntity = results.asSingleEntity();
-
-  if(userEntity == null) {
-
-   return null;
-
-  }
-
-  
-
+  if(userEntity == null) {return null; }
   String aboutMe = (String) userEntity.getProperty("aboutMe");
-
-  User user = new User(email, aboutMe);
-
-  
-
+     List<String> friends = Arrays.asList(((String) userEntity.getProperty("friends")).split(" "));
+                                          String fn = (String) userEntity.getProperty("firstName");
+                                          String ln = (String) userEntity.getProperty("lastName");
+  User user = new User(email, fn, ln, aboutMe, friends);
   return user;
 
  }
