@@ -24,6 +24,12 @@ function addLoginOrLogoutLinkToNavigation() {
     console.warn('Navigation element not found!');
     return;
   }
+  else {
+    navigationElement.appendChild(createListItem(createLink(
+      '/index.html', 'Home')));
+    navigationElement.appendChild(createListItem(createLink(
+      '/aboutus.html', 'About Our Team')));
+  }
 
   fetch('/login-status')
       .then((response) => {

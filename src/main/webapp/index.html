@@ -18,17 +18,22 @@ limitations under the License.
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>CodeU 2019 Starter Project</title>
     <link rel="stylesheet" href="/css/main.css">
-    <script src="/js/navigation-loader.js"></script>
+    <header>
+          <h1 class="logo">CodeU 2019 Starter Project</h1>
+          <input type="checkbox" id="nav-toggle" class="nav-toggle">
+          <nav>
+            <ul id="navigation">
+              <script src="/js/navigation-loader.js"></script>
+              <script>addLoginOrLogoutLinkToNavigation();</script>
+            </ul>
+          </nav>
+          <label for="nav-toggle" class="nav-toggle-label">
+              <span></span>
+            </label>
+    </header>
   </head>
-  <body onload="addLoginOrLogoutLinkToNavigation();", style="background-color:#FFE4B5;">
-    <nav>
-      <ul id="navigation">
-        <li><a href="/">Home</a></li>
-        <li><a href="/aboutus.html">About Our Team</a></li>
-      </ul>
-    </nav>
+  <body>
     <h1>CodeU Starter Project</h1>
     <p>This is the CodeU starter project. Click the links above to login and visit your page.
     You can post messages on your page, and you can visit other user pages if you have
