@@ -18,17 +18,22 @@ limitations under the License.
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>CodeU 2019 Starter Project</title>
     <link rel="stylesheet" href="/css/main.css">
-    <script src="/js/navigation-loader.js"></script>
+    <header>
+          <h1 class="logo">CodeU 2019 Starter Project</h1>
+          <input type="checkbox" id="nav-toggle" class="nav-toggle">
+          <nav>
+            <ul id="navigation">
+              <script src="/js/navigation-loader.js"></script>
+              <script>addLoginOrLogoutLinkToNavigation();</script>
+            </ul>
+          </nav>
+          <label for="nav-toggle" class="nav-toggle-label">
+              <span></span>
+            </label>
+    </header>
   </head>
-  <body onload="addLoginOrLogoutLinkToNavigation();", style="background-color:#FFE4B5;">
-    <nav>
-      <ul id="navigation">
-        <li><a href="/">Home</a></li>
-        <li><a href="/aboutus.html">About Our Team</a></li>
-      </ul>
-    </nav>
+  <body>
     <h1>CodeU Starter Project</h1>
     <p>This is the landing page for our project!</p>
     <p>We decided to create a platform for people to anonymously ask advice from people they know, in a "following" one-way relationship. Our project advisor suggested that we not do the usual unguided projects. Instead, we worked towards this concept.</p>

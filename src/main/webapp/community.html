@@ -1,8 +1,20 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Community Page</title>
     <link rel="stylesheet" href="/css/main.css">
+    <header>
+          <h1 class="logo">Community Page</h1>
+          <input type="checkbox" id="nav-toggle" class="nav-toggle">
+          <nav>
+            <ul id="navigation">
+              <script src="/js/navigation-loader.js"></script>
+              <script>addLoginOrLogoutLinkToNavigation();</script>
+            </ul>
+          </nav>
+          <label for="nav-toggle" class="nav-toggle-label">
+              <span></span>
+            </label>
+    </header>
 
     <script  type="text/javascript" src="js/community.js">
   

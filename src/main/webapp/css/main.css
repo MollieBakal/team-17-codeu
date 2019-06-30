@@ -1,32 +1,211 @@
-/*
- * Copyright 2019 Google Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+@import url('https://fonts.googleapis.com/css?family=Work+Sans:300,600');
 
-/* Prevent the page from becoming too wide. */
+:root {
+  --background: rgba(61, 178, 225, .90);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 body {
-  max-width: 600px;
+  padding-top: 25px;
+	margin: 0;
+	font-family: 'Work Sans', sans-serif;
+	font-weight: 400;
 }
 
-/* Remove bullet points from navigation bar. */
+/* Navigation related styles below */
+
+header {
+  /* Uses bacground color value created above */
+  background: var(--background);
+  /* Centers text */
+  text-align: center;
+  /* Causes nav bar to follow user as they scroll */
+  position: sticky;
+  /* Ensures this is up top */
+  z-index: 999;
+  /* Allows the nav bar to take up the whole width of the screen */
+  width: 100%;
+}
+
+/* Allows nav to gain focus which makes it tabbable */
+.nav-toggle {
+  position: absolute !important;
+  top: -9999px !important;
+  left: -9999px !important;
+}
+
+
+.nav-toggle:focus ~ .nav-toggle-label {
+  outline: 3px solid rgba(lightblue, .75);
+}
+
+/* Centers things perfectly between top and bottom */
+.nav-toggle-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-left: 1em;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* The <span> tag is used to group inline-elements in a document and provides a way to add a hook to a part of a text or a part of a document. */
+.nav-toggle-label span,
+.nav-toggle-label span::before,
+.nav-toggle-label span::after {
+  display: block;
+  background: white;
+  height: 2px;
+  width: 2em;
+  border-radius: 2px;
+  position: relative;
+}
+
+/* Need content tag so it doesnt default to none and not show up*/
+.nav-toggle-label span::before,
+.nav-toggle-label span::after {
+  content: '';
+  position: absolute;
+}
+
+/* Moves pixels from bottom */
+.nav-toggle-label span::before {
+  bottom: 7px;
+}
+
+/* Moves pixels from top */
+.nav-toggle-label span::after {
+  top: 7px;
+}
+
+nav {
+  position: absolute;
+  /* Sets text of the nav bar ex. Home, About Us etc. to the left */
+  text-align: left;
+  /* Alligns text to the top */
+  top: 100%;
+  left: 0;
+  /* Uses bacground color value created above */
+  background: var(--background);
+  /* Allows the nav bar to take up the whole width of the screen */
+  width: 100%;
+  /* Sets width to 100% but height at 0% */
+  transform: scale(1, 0);
+  /* Transitions in the menu items from the top*/
+  transform-origin: top;
+  transition: transform 400ms ease-in-out;
+}
+
 nav ul {
-  list-style-type: none;
-  padding-left: 0;
+  margin: 0;
+  padding: 0;
+  /* Gets rid of bullet points */
+  list-style: none;
 }
 
-/* Keep navigation menu on one line. */
 nav li {
-  display: inline-block;
-  margin-right: 10px
+  margin-bottom: 1em;
+  margin-left: 1em;
+}
+
+/* Sets initial color of words to white, changes font size, makes words all uppercase, solidly visible. */
+nav a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity 150ms ease-in-out;
+}
+
+/* Changes text color to black when the user hovers their cursor over it */
+nav a:hover {
+  color: #000;
+}
+
+/* ~ Looks for any preceeding nav sibling to increase its size/scale */
+.nav-toggle:checked ~ nav {
+  transform: scale(1,1);
+}
+
+/* ~ Looks for any preceeding nav a sibling to make it solid in color and the animation delay */
+.nav-toggle:checked ~ nav a {
+  opacity: 1;
+  transition: opacity 250ms ease-in-out 250ms;
+}
+
+/* Sets a minimum width */
+@media screen and (min-width: 800px) {
+  /* Hides hamberger dropdown symbol */
+  .nav-toggle-label {
+    display: none;
+  }
+
+  /* Sets up a grid so the logo and nav a links can go in specific sections for organization purposes */
+  header {
+    display: grid;
+    grid-template-columns: 1fr auto minmax(600px, 3fr) 1fr;
+  }
+  
+  .logo {
+    grid-column: 2 / 3;
+  }
+  
+  nav {
+    /* // all: unset; this causes issues with Edge, since it's unsupported */
+    
+    /* the following lines are not from my video, but add Edge support */
+    position: relative;
+    text-align: left;
+    transition: none;
+    transform: scale(1,1);
+    background: none;
+    top: initial;
+    left: initial;
+    /* end Edge support stuff */
+    
+    grid-column: 3 / 4;
+    /* Moves nav info to the center of the grid space it occupies */
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  
+  nav ul {
+    display: flex;
+  }
+  
+  nav li {
+    margin-left: 3em;
+    margin-bottom: 0;
+  }
+  
+  nav a {
+    opacity: 1;
+    position: relative;
+  }
+  
+  /* On full screen nav when the nav links are hovered over a black line will transition in above it */
+  nav a::before {
+    content: '';
+    display: block;
+    height: 5px;
+    background: black;
+    position: absolute;
+    top: -.75em;
+    left: 0;
+    right: 0;
+    transform: scale(0, 1);
+    transition: transform ease-in-out 250ms;
+  }
+  
+  /* On full screen nav when the nav links are hovered over they'll increase in size/scale */
+  nav a:hover::before {
+    transform: scale(1,1);
+  }
+
 }

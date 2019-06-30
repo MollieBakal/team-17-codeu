@@ -14,12 +14,19 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <style>
-            body {
-                background-color: #E0FFFF
-            }
-        </style>
-        <title>User Page</title>
+            <header>
+                    <h1 class="logo">Your Page</h1>
+                    <input type="checkbox" id="nav-toggle" class="nav-toggle">
+                    <nav>
+                      <ul id="navigation">
+                        <script src="/js/navigation-loader.js"></script>
+                        <script>addLoginOrLogoutLinkToNavigation();</script>
+                      </ul>
+                    </nav>
+                    <label for="nav-toggle" class="nav-toggle-label">
+                        <span></span>
+                      </label>
+              </header>
         <meta charset="UTF-8">
             <link rel="stylesheet" href="/css/main.css">
                 <link rel="stylesheet" href="/css/user-page.css">
@@ -38,12 +45,6 @@
         </form>
     </script>
     <body onload="buildUI();">
-        <nav>
-            <ul id="navigation">
-                <li><a href="/">Home</a></li>
-                <li><a href="/aboutus.html">About Our Team</a></li>
-            </ul>
-        </nav>
         <h1 id="page-title">User Page</h1>
         <div id="about-me-container">Loading...</div>
         
