@@ -50,8 +50,8 @@ public class Question extends Message{
     public String getKidsToString(){
         String strkid = "";
         for(UUID kidID: childIDs){
-            strkid += ":";
             strkid += kidID.toString();
+	    strkid += ":";
         }
         return strkid;
     }
@@ -62,6 +62,9 @@ public class Question extends Message{
     
     public void setAccess(String stuff){
         this.access = stuff;
+    }
+    public String getUser(){
+	return user;
     }
      */
 }

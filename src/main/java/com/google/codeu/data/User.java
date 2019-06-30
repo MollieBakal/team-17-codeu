@@ -2,6 +2,9 @@ package com.google.codeu.data;
 
 import java.awt.Image;
 import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Arrays;
 
 public class User {
 
@@ -12,18 +15,23 @@ public class User {
   private String aboutMe;
   private Image profilePic;
   
+  private List<String> friends = new ArrayList<String>();
 
-  public User(UUID id, String firstName, String lastName, String email, String aboutMe, Image profilePic) {
+  public User(UUID id, String firstName, String lastName, String email, String aboutMe, Image profilePic, List<String> friends) {
     this.id = id;
     this.firstName = firstName;
-    this.firstName = lastName;
+    this.lastName = lastName;
     this.email = email;
     this.aboutMe = aboutMe;
     this.profilePic = profilePic;
+      this.friends = friends;
   }
   //for compatibility with datastore
     public User(String email, String aboutMe){
-        this(UUID.randomUUID(), "", "", email, aboutMe, null);
+        this(UUID.randomUUID(), "", "", email, aboutMe, null, null);
+    }
+    public User(String email, String fn, String ln, String aboutMe, List<String> friends){
+        this(UUID.randomUUID(), fn, ln, email, aboutMe, null, friends);
     }
     
   public UUID getID(){
@@ -48,5 +56,25 @@ public class User {
   
   public Image getProfilePic() {
     return profilePic;
+  }
+    public List<String> getFriends(){
+        return friends;
+    }
+    
+    public void addFriend(String email){
+        this.friends.add(email);
+    }
+    
+    public void setFriends(List<String> newFriends){
+        this.friends = newFriends;
+        
+    }
+    public String getFriendsToString(){
+        String frie = "";
+        for(String fr: friends){
+            frie += fr;
+            frie += " ";
+        }
+        return frie;
   }
 }
