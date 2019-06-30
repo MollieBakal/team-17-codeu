@@ -38,6 +38,7 @@
    isn't too close to the border. */
 .message-body {
   margin: 5px;
+  margin-bottom: 10px;
 }
 
 /* Use this to hide certain elements like forms if the

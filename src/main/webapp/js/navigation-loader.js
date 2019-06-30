@@ -29,6 +29,8 @@ function addLoginOrLogoutLinkToNavigation() {
       '/index.html', 'Home')));
     navigationElement.appendChild(createListItem(createLink(
       '/aboutus.html', 'About Our Team')));
+    navigationElement.appendChild(createListItem(createLink(
+      '/feed.html', 'Public Feed')));
   }
 
   fetch('/login-status')
