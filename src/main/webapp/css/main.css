@@ -158,8 +158,8 @@ nav a:hover {
   nav {
     /* // all: unset; this causes issues with Edge, since it's unsupported */
     
-    /* the following lines are not from my video, but add Edge support 
-    see https://youtu.be/8QKOaTYvYUA for video guidance */
+    /* The following lines are not from the video, but add Edge support 
+    see https://youtu.be/8QKOaTYvYUA for video guidance and https://codepen.io/kevinpowell/pen/jxppmr for the exact code used */
     position: relative;
     text-align: left;
     transition: none;
