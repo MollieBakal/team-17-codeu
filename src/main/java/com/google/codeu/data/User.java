@@ -28,7 +28,7 @@ public class User {
   }
   //for compatibility with datastore
     public User(String email, String aboutMe){
-        this(UUID.randomUUID(), "", "", email, aboutMe, null, null);
+        this(UUID.randomUUID(), "", "", email, aboutMe, null, new ArrayList<String>());
     }
     public User(String email, String fn, String ln, String aboutMe, List<String> friends){
         this(UUID.randomUUID(), fn, ln, email, aboutMe, null, friends);
@@ -71,10 +71,12 @@ public class User {
     }
     public String getFriendsToString(){
         String frie = "";
-        for(String fr: friends){
+	if ((this.friends).size() > 0){
+          for(String fr: this.friends){
             frie += fr;
             frie += " ";
-        }
+          }
+	}
         return frie;
   }
 }
