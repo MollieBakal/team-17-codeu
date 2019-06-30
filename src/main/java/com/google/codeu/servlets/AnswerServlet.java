@@ -53,7 +53,7 @@ public class AnswerServlet extends HttpServlet{
         parent.addAnswer(message);
         datastore.storeQuestion(parent);
         datastore.storeMessage(message);
-        response.sendRedirect("/user-page.html?user=" + user);
+        response.sendRedirect("/user-page.html?user=" + parent.getUser());
         
 
     }
