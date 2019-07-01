@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html>
+
     <head>
             <header>
                     <h1 class="logo">Your Advisors</h1>
@@ -15,16 +14,18 @@
               </header>
               <meta charset="UTF-8">
             <link rel="stylesheet" href="/css/main.css">
-                <link rel="stylesheet" href="/css/user-page.css">
-                    <script src="/js/user-page-loader.js"></script>
       </head>
       <body>
-        <h1>About Our Team</h1>
-    <h2>Duncan Ross</h2>
-    <ul>
-      <li>Summer Feelz: Excited, Nervous, Committed </li>
-      <li>Aspirational Hobby: I'd love to buy a massive property and make a veggie/herb garden. Either that or work on cars/motorcycles.</li>
-      <li>Ask me About: Rugby, Billiards, Motorcyles, and Stocks!</li>
-    </ul>
+        <script  type="text/javascript" src="js/advisors.js">
+      </script>
+      <script> fetchAdvisors();></script>
+        <script>buildAdvElement(advString);</script>
+        <script>buildUI();</script>
+      <div id="advisors-container">Loading...</div>
+<div>
+      <h2>Request new advisors:</h2>
+      <input type="text" placeholder="Enter a user's email">
+      <button type="submit">Submit</button>
+      </div>
       </body>
-</html>
+

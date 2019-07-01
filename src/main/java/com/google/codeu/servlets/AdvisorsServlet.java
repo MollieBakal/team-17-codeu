@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 
 /**
  * Responds with a hard-coded message for testing purposes.
@@ -19,18 +21,18 @@ public class AdvisorsServlet extends HttpServlet{
  @Override
  public void doGet(HttpServletRequest request, HttpServletResponse response)
    throws IOException {
-  
-  	
-
    response.setContentType("application/json");
 
    String user = request.getParameter("user");
+   //System.out.println(user);
 
     if (user == null || user.equals("")) {
       // Request is invalid, return empty array
       response.getWriter().println("[]");
       return;
     }
+
+    
 
     List<String> advisors = datastore.getUser(user).getFriends();
 
