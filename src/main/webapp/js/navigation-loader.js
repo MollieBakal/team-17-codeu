@@ -31,6 +31,7 @@ function addLoginOrLogoutLinkToNavigation() {
       '/aboutus.html', 'About Our Team')));
     navigationElement.appendChild(createListItem(createLink(
       '/feed.html', 'Public Feed')));
+    
   }
 
   fetch('/login-status')
@@ -41,9 +42,11 @@ function addLoginOrLogoutLinkToNavigation() {
         if (loginStatus.isLoggedIn) {
           navigationElement.appendChild(createListItem(createLink(
               '/user-page.html?user=' + loginStatus.username, 'Your Page')));
-
+          navigationElement.appendChild(
+              createListItem(createLink('/advisors.html?user=' + loginStatus.username, 'Your Advisors')));
           navigationElement.appendChild(
               createListItem(createLink('/logout', 'Logout')));
+
         } else {
           navigationElement.appendChild(
               createListItem(createLink('/login', 'Login')));
