@@ -13,40 +13,40 @@ import java.util.List;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
+
 /**
  * Responds with a hard-coded message for testing purposes.
  */
-@WebServlet("/advisors")
-public class AdvisorsServlet extends HttpServlet{
+@WebServlet("/requests")
+public class RequestsServlet extends HttpServlet{
   private Datastore datastore;
   UserService userService = UserServiceFactory.getUserService();
  @Override
  public void doGet(HttpServletRequest request, HttpServletResponse response)
    throws IOException {
-   response.setContentType("application/json");
+   		response.setContentType("application/json");
 
-   String user = userService.getCurrentUser().getEmail();
+   		String user = userService.getCurrentUser().getEmail();
+   }
 
-    if (user == null || user.equals("")) {
-      // Request is invalid, return empty array
-      response.getWriter().println("[]");
+
+   @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+    UserService userService = UserServiceFactory.getUserService();
+    if (!userService.isUserLoggedIn()) {
+      response.sendRedirect("/index.html");
       return;
     }
 
-    
+    String user = userService.getCurrentUser().getEmail();
+    String advisor = request.getParameter("text");
 
-    List<String> advisors = datastore.getUser(user).getFriends();
+    Request req = new Request(user,advisor);
+    datastore.storeRequest(req);
+    System.out.println("Request made");
 
+    response.sendRedirect("/advisors.html?user=" + user);
+}
 
-   Gson gson = new Gson();
-    String json = gson.toJson(advisors);
-    response.getOutputStream().println(json);
-
- }
-
-
-
- public void addAdvisor(String requester){
-    Request req = new Request(userService.getCurrentUser().getEmail(),requester);
- }
 }

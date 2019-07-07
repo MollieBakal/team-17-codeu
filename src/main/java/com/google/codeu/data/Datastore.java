@@ -47,6 +47,16 @@ public class Datastore {
     datastore = DatastoreServiceFactory.getDatastoreService();
   }
 
+
+  public void storeRequest(Request request){
+    Entity requestEntity = new Entity("Request", request.getID().toString());
+    requestEntity.setProperty("requester", request.getRequester());
+    requestEntity.setProperty("requestee", request.getRequestee());
+    requestEntity.setProperty("timestamp", request.getTimestamp());
+    requestEntity.setProperty("status",request.getStatus());
+
+    datastore.put(requestEntity);
+  }
   /** Stores the Message in Datastore. */
   public void storeMessage(Message message) {
     Entity messageEntity = new Entity("Message", message.getId().toString());

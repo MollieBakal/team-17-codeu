@@ -16,11 +16,11 @@ if (!parameterUsername) {
         const advisorsContainer = document.getElementById('advisors-container');
         
 
-       if(advisors.length == 0){
+       if(advisors.length == 0 || advisors == ""){
        advisorsContainer.innerHTML = '<p>You have no advisors yet.</p>';
       }
       else{
-       advisorsContainer.innerHTML = 'Your advisors: '; 
+       advisorsContainer.innerHTML = '<p> Your advisors: </p>'; 
       }
       advisors.forEach((advisor) => {  
        const advisorDiv = buildAdvElement(advisor);
@@ -40,3 +40,8 @@ if (!parameterUsername) {
     function buildUI(){
      fetchAdvisors();
     }
+
+    function addAdvisor(){
+      
+    }
+
