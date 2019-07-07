@@ -20,6 +20,12 @@ import com.google.appengine.api.users.UserServiceFactory;
 @WebServlet("/requests")
 public class RequestsServlet extends HttpServlet{
   private Datastore datastore;
+
+  @Override
+  public void init() {
+    datastore = new Datastore();
+  }
+  
   UserService userService = UserServiceFactory.getUserService();
  @Override
  public void doGet(HttpServletRequest request, HttpServletResponse response)
