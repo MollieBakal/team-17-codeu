@@ -20,10 +20,17 @@ import com.google.appengine.api.users.UserServiceFactory;
 @WebServlet("/requests")
 public class RequestsServlet extends HttpServlet{
   private Datastore datastore;
-  UserService userService = UserServiceFactory.getUserService();
+  
+  @Override
+  public void init() {
+    datastore = new Datastore();
+  }
+
+  
  @Override
  public void doGet(HttpServletRequest request, HttpServletResponse response)
    throws IOException {
+   UserService userService = UserServiceFactory.getUserService();
    		response.setContentType("application/json");
 
    		String user = userService.getCurrentUser().getEmail();
