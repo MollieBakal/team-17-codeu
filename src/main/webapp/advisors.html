@@ -15,12 +15,13 @@
   <meta charset="UTF-8">
   <link rel="stylesheet" href="/css/main.css">
 </head>
-<body>
+
   <script  type="text/javascript" src="js/advisors.js">
   </script>
-  <script> fetchAdvisors();></script>
+  <script>fetchAdvisors();</script>
   <script>buildAdvElement(advString);</script>
   <script>buildUI();</script>
+  <body onload="buildUI()">
   <div id="advisors-container">Loading...</div>
   <div>
     <h2>Request new advisors:</h2>
