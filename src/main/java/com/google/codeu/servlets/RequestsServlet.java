@@ -33,6 +33,23 @@ public class RequestsServlet extends HttpServlet{
    		response.setContentType("application/json");
 
    		String user = userService.getCurrentUser().getEmail();
+
+
+    if (user == null || user.equals("")) {
+      // Request is invalid, return empty array
+      response.getWriter().println("[]");
+      return;
+    }
+
+    
+
+    List<Request> incomingRequests = datastore.getIncomingRequests(user);
+
+
+    Gson gson = new Gson();
+    String json = gson.toJson(incomingRequests);
+    response.getOutputStream().println(json);
+
    }
 
 
