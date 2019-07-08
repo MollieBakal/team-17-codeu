@@ -20,12 +20,19 @@ import com.google.appengine.api.users.UserServiceFactory;
 public class AdvisorsServlet extends HttpServlet{
   private Datastore datastore;
   UserService userService = UserServiceFactory.getUserService();
+
+  @Override
+  public void init() {
+    datastore = new Datastore();
+  }
+  
  @Override
  public void doGet(HttpServletRequest request, HttpServletResponse response)
    throws IOException {
    response.setContentType("application/json");
 
    String user = userService.getCurrentUser().getEmail();
+   System.out.println(user);
 
     if (user == null || user.equals("")) {
       // Request is invalid, return empty array
