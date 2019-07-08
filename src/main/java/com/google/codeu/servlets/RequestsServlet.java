@@ -25,11 +25,11 @@ public class RequestsServlet extends HttpServlet{
   public void init() {
     datastore = new Datastore();
   }
-  
-  UserService userService = UserServiceFactory.getUserService();
+
  @Override
  public void doGet(HttpServletRequest request, HttpServletResponse response)
    throws IOException {
+   UserService userService = UserServiceFactory.getUserService();
    		response.setContentType("application/json");
 
    		String user = userService.getCurrentUser().getEmail();
