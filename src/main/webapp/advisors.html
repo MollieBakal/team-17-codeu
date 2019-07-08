@@ -1,31 +1,35 @@
 
-    <head>
-            <header>
-                    <h1 class="logo">Your Advisors</h1>
-                    <nav>
-                      <ul id="navigation">
-                        <script src="/js/navigation-loader.js"></script>
-                        <script>addLoginOrLogoutLinkToNavigation();</script>
-                      </ul>
-                    </nav>
-                    <label for="nav-toggle" class="nav-toggle-label">
-                        <span></span>
-                      </label>
-              </header>
-              <meta charset="UTF-8">
-            <link rel="stylesheet" href="/css/main.css">
-      </head>
-      <body>
-        <script  type="text/javascript" src="js/advisors.js">
-      </script>
-      <script> fetchAdvisors();></script>
-        <script>buildAdvElement(advString);</script>
-        <script>buildUI();</script>
-      <div id="advisors-container">Loading...</div>
-<div>
-      <h2>Request new advisors:</h2>
-      <input type="text" placeholder="Enter a user's email">
-      <button type="submit">Submit</button>
-      </div>
-      </body>
+<head>
+  <header>
+    <h1 class="logo">Your Advisors</h1>
+    <nav>
+      <ul id="navigation">
+        <script src="/js/navigation-loader.js"></script>
+        <script>addLoginOrLogoutLinkToNavigation();</script>
+      </ul>
+    </nav>
+    <label for="nav-toggle" class="nav-toggle-label">
+      <span></span>
+    </label>
+  </header>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <script  type="text/javascript" src="js/advisors.js">
+  </script>
+  <script> fetchAdvisors();></script>
+  <script>buildAdvElement(advString);</script>
+  <script>buildUI();</script>
+  <div id="advisors-container">Loading...</div>
+  <div>
+    <h2>Request new advisors:</h2>
+
+    <form id="request-form" action="/requests" method="POST" class="hidden">
+      <textarea name="text" id="request-input" placeholder="Enter a user's email"></textarea>
+      <input type="submit" value="Submit">
+    </form>
+
+  </div>
+</body>
 

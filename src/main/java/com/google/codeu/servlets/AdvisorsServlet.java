@@ -1,6 +1,7 @@
 package com.google.codeu.servlets;
 
 import com.google.codeu.data.Datastore;
+import com.google.codeu.data.Request;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.Set;
@@ -18,13 +19,13 @@ import com.google.appengine.api.users.UserServiceFactory;
 @WebServlet("/advisors")
 public class AdvisorsServlet extends HttpServlet{
   private Datastore datastore;
+  UserService userService = UserServiceFactory.getUserService();
  @Override
  public void doGet(HttpServletRequest request, HttpServletResponse response)
    throws IOException {
    response.setContentType("application/json");
 
-   String user = request.getParameter("user");
-   //System.out.println(user);
+   String user = userService.getCurrentUser().getEmail();
 
     if (user == null || user.equals("")) {
       // Request is invalid, return empty array
@@ -41,5 +42,11 @@ public class AdvisorsServlet extends HttpServlet{
     String json = gson.toJson(advisors);
     response.getOutputStream().println(json);
 
+ }
+
+
+
+ public void addAdvisor(String requester){
+    Request req = new Request(userService.getCurrentUser().getEmail(),requester);
  }
 }

@@ -47,6 +47,78 @@ public class Datastore {
     datastore = DatastoreServiceFactory.getDatastoreService();
   }
 
+
+  public void storeRequest(Request request){
+    Entity requestEntity = new Entity("Request", request.getID().toString());
+    requestEntity.setProperty("requester", request.getRequester());
+    requestEntity.setProperty("requestee", request.getRequestee());
+    requestEntity.setProperty("timestamp", request.getTimestamp());
+    requestEntity.setProperty("status",request.getStatus());
+
+    datastore.put(requestEntity);
+  }
+
+  public List<Request> getIncomingRequests(String requestee) {
+    List<Request> requests = new ArrayList<Request>();
+
+    Query query =
+        new Query("Request")
+            //The setFilter line was here originally but not in the Step 3 provided code
+            .setFilter(new Query.FilterPredicate("requestee", FilterOperator.EQUAL, requestee))
+            .addSort("timestamp", SortDirection.DESCENDING);
+    PreparedQuery results = datastore.prepare(query);
+
+    return requestHelper(requestee, requests, query, results);
+  }
+
+  public List<Request> getAllRequests() {
+    List<Request> requests = new ArrayList<Request>();
+
+    Query query =
+        new Query("Request")
+            //The setFilter line was here originally but not in the Step 3 provided code
+            .addSort("timestamp", SortDirection.DESCENDING);
+    PreparedQuery results = datastore.prepare(query);
+
+    return requestHelper("getAllRequests", requests, query, results);
+  }
+
+  public List<Request> requestHelper(String userOrAll, List<Request> requests, Query query, PreparedQuery results) {
+    for (Entity entity : results.asIterable()) {
+      try {
+        String idString = entity.getKey().getName();
+        UUID id = UUID.fromString(idString);
+
+        String requestee;
+        //The users need only be specified when all messages of possibly more than one user is being shown
+        if(userOrAll.equals("getAllRequests")) {
+          requestee = (String) entity.getProperty("requestee");
+        }
+        else {
+          requestee = userOrAll;
+        }
+
+        String requester = (String) entity.getProperty("requester");
+        int status = (int) entity.getProperty("status");
+        long timestamp = (long) entity.getProperty("timestamp");
+
+        Request request = new Request(id,requester,requestee,timestamp,status);
+        requests.add(request);
+      } catch (Exception e) {
+        System.err.println("Error reading request.");
+        System.err.println(entity.toString());
+        e.printStackTrace();
+      }
+    }
+
+    return requests;
+  }
+
+
+
+
+
+
   /** Stores the Message in Datastore. */
   public void storeMessage(Message message) {
     Entity messageEntity = new Entity("Message", message.getId().toString());
