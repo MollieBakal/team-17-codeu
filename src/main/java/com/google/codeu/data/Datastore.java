@@ -99,8 +99,8 @@ public class Datastore {
         }
 
         String requester = (String) entity.getProperty("requester");
-        int status = (int) entity.getProperty("status");
         long timestamp = (long) entity.getProperty("timestamp");
+        long status = (long) entity.getProperty("status");
 
         Request request = new Request(id,requester,requestee,timestamp,status);
         requests.add(request);

@@ -2,6 +2,7 @@ package com.google.codeu.servlets;
 
 import com.google.codeu.data.Datastore;
 import com.google.codeu.data.Request;
+import com.google.codeu.data.User;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.Set;
@@ -10,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Arrays;
+import java.util.ArrayList;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
@@ -32,7 +35,6 @@ public class AdvisorsServlet extends HttpServlet{
    response.setContentType("application/json");
 
    String user = userService.getCurrentUser().getEmail();
-   System.out.println(user);
 
     if (user == null || user.equals("")) {
       // Request is invalid, return empty array
@@ -41,8 +43,12 @@ public class AdvisorsServlet extends HttpServlet{
     }
 
     
+    List<String> advisors = new ArrayList<String>();
 
-    List<String> advisors = datastore.getUser(user).getFriends();
+    if(datastore.getUser(user)!=null){
+      advisors=datastore.getUser(user).getFriends();
+    }
+    
 
 
    Gson gson = new Gson();

@@ -26,12 +26,12 @@ public class Request{
       this.timestamp = System.currentTimeMillis();
       this.status = 0;
   }
-  public Request(UUID id,String requester, String requestee,long timestamp,int status){
+  public Request(UUID id,String requester, String requestee,long timestamp,long status){
       this.id = id;
       this.requester = requester;
       this.requestee = requestee;
       this.timestamp = timestamp;
-      this.status = status;
+      this.status = (int)status;
   }
   public UUID getID() {
     return id;

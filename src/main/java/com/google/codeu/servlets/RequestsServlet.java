@@ -43,7 +43,7 @@ public class RequestsServlet extends HttpServlet{
 
     
 
-    List<Request> incomingRequests = datastore.getIncomingRequests(user);
+    List<Request> incomingRequests = datastore.getAllRequests();
 
 
     Gson gson = new Gson();

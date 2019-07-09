@@ -7,41 +7,74 @@ if (!parameterUsername) {
 }
 
 //Fetch advisors and requests and display them
-    
-    function fetchAdvisors(){
-      const url = '/advisors';
-      fetch(url).then((response) => {
-        return response.json();
-      }).then((advisors) => {
-        const advisorsContainer = document.getElementById('advisors-container');
-        
+function setPageTitle() {
+  document.getElementById('page-title').innerText = parameterUsername;
+  document.title = parameterUsername + ' - User Page';
+}
 
-       if(advisors.length == 0 || advisors == ""){
-       advisorsContainer.innerHTML = '<p>You have no advisors yet.</p>';
+function fetchAdvisors() {
+  const url = '/advisors?user=' + parameterUsername;
+  fetch(url).then((response) => {
+    return response.json();
+  }).then((advisors) => {
+    const advisorsContainer = document.getElementById('advisors-container');
+
+
+    if (advisors.length == 0 || advisors == "") {
+      advisorsContainer.innerHTML = '<p>You have no advisors yet.</p>';
+    }
+    else {
+      advisorsContainer.innerHTML = '<p> Your advisors: </p>';
+    }
+    advisors.forEach((advisor) => {
+      const advisorDiv = buildAdvElement(advisor);
+      advisorsContainer.appendChild(advisorDiv);
+    });
+
+  });
+}
+
+function buildAdvElement(advString) {
+  const advElement = document.createElement('p');
+  advElement.appendChild(document.createTextNode(advString));
+  return advElement;
+}
+
+
+function fetchRequests() {
+  const url = '/requests';
+
+  fetch(url).then((response) => {
+    return response.json();
+  }).then((requests) => {
+    const requestsContainer = document.getElementById('requests-container');
+    requestsContainer.innerHTML = ""
+    requests.forEach((request) => {
+      //requestsContainer.innerHTML += request.requester;
+      if (request.requestee == parameterUsername) {
+        const requestDiv = buildReqElement(request);
+        requestsContainer.appendChild(requestDiv);
       }
-      else{
-       advisorsContainer.innerHTML = '<p> Your advisors: </p>'; 
-      }
-      advisors.forEach((advisor) => {  
-       const advisorDiv = buildAdvElement(advisor);
-       advisorsContainer.appendChild(advisorDiv);
-      });
+    });
 
-      });
-    }
 
-    function buildAdvElement(advString){
-     const advElement = document.createElement('p');
-     advElement.appendChild(document.createTextNode(advString));
-     return advElement;
-    }
+  });
+}
 
-    // Fetch data and populate the UI of the page.
-    function buildUI(){
-     fetchAdvisors();
-    }
+function buildReqElement(request) {
+  const reqElement = document.createElement('p');
+  reqElement.appendChild(document.createTextNode(request.requester));
+  return reqElement;
+}
 
-    function addAdvisor(){
-      
-    }
+// Fetch data and populate the UI of the page.
+function buildUI() {
+  setPageTitle();
+  fetchAdvisors();
+  fetchRequests();
+}
+
+function addAdvisor() {
+
+}
 
