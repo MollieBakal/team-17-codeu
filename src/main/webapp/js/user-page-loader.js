@@ -126,7 +126,12 @@ function buildMessageDiv(message) {
 function buildAnonDiv(message) {
     const headerDiv = document.createElement('div');
     headerDiv.classList.add('message-header');
-    headerDiv.appendChild(document.createTextNode(new Date(message.timestamp)));
+    if(message.user == parameterUsername){
+        headerDiv.appendChild(document.createTextNode(message.user + ' - ' + new Date(message.timestamp)));
+    }else{
+        headerDiv.appendChild(document.createTextNode(new Date(message.timestamp)));
+    }
+    
     
     const bodyDiv = document.createElement('div');
     bodyDiv.classList.add('message-body');
