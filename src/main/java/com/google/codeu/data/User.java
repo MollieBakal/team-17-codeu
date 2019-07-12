@@ -16,22 +16,24 @@ public class User {
   private Image profilePic;
   
   private ArrayList<String> advisees = new ArrayList<String>();
+  private ArrayList<String> advisors = new ArrayList<String>();
 
-  public User(UUID id, String firstName, String lastName, String email, String aboutMe, Image profilePic, ArrayList<String> friends) {
+  public User(UUID id, String firstName, String lastName, String email, String aboutMe, Image profilePic, ArrayList<String> advisees,ArrayList<String> advisors) {
     this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
     this.email = email;
     this.aboutMe = aboutMe;
     this.profilePic = profilePic;
-      this.advisees = friends;
+    this.advisees = advisees;
+    this.advisors = advisors;
   }
   //for compatibility with datastore
     public User(String email, String aboutMe){
-        this(UUID.randomUUID(), "", "", email, aboutMe, null, new ArrayList<String>());
+        this(UUID.randomUUID(), "", "", email, aboutMe, null, new ArrayList<String>(),new ArrayList<String>());
     }
-    public User(String email, String fn, String ln, String aboutMe, ArrayList<String> friends){
-        this(UUID.randomUUID(), fn, ln, email, aboutMe, null, friends);
+    public User(String email, String fn, String ln, String aboutMe, ArrayList<String> advisees,ArrayList<String> advisors){
+        this(UUID.randomUUID(), fn, ln, email, aboutMe, null, advisees,advisors);
     }
     
   public UUID getID(){
@@ -68,6 +70,17 @@ public class User {
     public void setAdvisees(ArrayList<String> newFriends){
         this.advisees = newFriends;
     }
+    public ArrayList<String> getAdvisors(){
+        return advisors;
+    }
+    
+    public void addAdvisor(String email){
+        this.advisors.add(email);
+    }
+    
+    public void setAdvisors(ArrayList<String> newFriends){
+        this.advisors = newFriends;
+    }
     public void setAboutMe(String newAM){
         this.aboutMe = newAM;
     }
@@ -77,10 +90,20 @@ public class User {
     public void setLastName(String ln){
         this.lastName = ln;
     }
-    public String getFriendsToString(){
+    public String getAdviseesToString(){
         String frie = "";
 	if ((this.advisees).size() > 0){
           for(String fr: this.advisees){
+            frie += fr;
+            frie += " ";
+          }
+	}
+        return frie;
+  }
+  public String getAdvisorsToString(){
+        String frie = "";
+	if ((this.advisors).size() > 0){
+          for(String fr: this.advisors){
             frie += fr;
             frie += " ";
           }

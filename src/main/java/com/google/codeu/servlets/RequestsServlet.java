@@ -90,8 +90,14 @@ public class RequestsServlet extends HttpServlet{
           //System.out.println("yes");
           aRequest.accept();
           User requestee = datastore.getUser(user);
-          //System.out.println(requestee);
           requestee.addAdvisee(requester);
+          datastore.storeUser(requestee);
+          
+
+          User requestor = datastore.getUser(requester);
+          requestor.addAdvisor(user);
+          datastore.storeUser(requestor);
+
         }
         else{
           //System.out.println("no");
