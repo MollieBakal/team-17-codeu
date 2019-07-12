@@ -15,9 +15,9 @@ public class User {
   private String aboutMe;
   private Image profilePic;
   
-  private List<String> advisees = new ArrayList<String>();
+  private ArrayList<String> advisees = new ArrayList<String>();
 
-  public User(UUID id, String firstName, String lastName, String email, String aboutMe, Image profilePic, List<String> friends) {
+  public User(UUID id, String firstName, String lastName, String email, String aboutMe, Image profilePic, ArrayList<String> friends) {
     this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
@@ -30,7 +30,7 @@ public class User {
     public User(String email, String aboutMe){
         this(UUID.randomUUID(), "", "", email, aboutMe, null, new ArrayList<String>());
     }
-    public User(String email, String fn, String ln, String aboutMe, List<String> friends){
+    public User(String email, String fn, String ln, String aboutMe, ArrayList<String> friends){
         this(UUID.randomUUID(), fn, ln, email, aboutMe, null, friends);
     }
     
@@ -57,7 +57,7 @@ public class User {
   public Image getProfilePic() {
     return profilePic;
   }
-    public List<String> getAdvisees(){
+    public ArrayList<String> getAdvisees(){
         return advisees;
     }
     
@@ -65,7 +65,7 @@ public class User {
         this.advisees.add(email);
     }
     
-    public void setAdvisees(List<String> newFriends){
+    public void setAdvisees(ArrayList<String> newFriends){
         this.advisees = newFriends;
     }
     public void setAboutMe(String newAM){

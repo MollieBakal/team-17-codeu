@@ -301,7 +301,7 @@ public class Datastore {
   Entity userEntity = results.asSingleEntity();
   if(userEntity == null) {return null; }
   String aboutMe = (String) userEntity.getProperty("aboutMe");
-     List<String> advisees = Arrays.asList(((String) userEntity.getProperty("advisees")).split(" "));
+     ArrayList<String> advisees = new ArrayList<String>(Arrays.asList(((String) userEntity.getProperty("advisees")).split(" ")));
       String fn = (String) userEntity.getProperty("firstName");
       String ln = (String) userEntity.getProperty("lastName");
   User user = new User(email, fn, ln, aboutMe, advisees);
@@ -402,7 +402,7 @@ public int getLongestMessage(){
         Query query =
         new Query("Question")
         //The setFilter line was here originally but not in the Step 3 provided code
-        .setFilter(new Query.CompositeFilter(Query.CompositeFilterOperator.AND, filters))
+        .setFilter(new Query.CompositeFilter(Query.CompositeFilterOperator.OR, filters))
         .addSort("timestamp", SortDirection.DESCENDING);
         PreparedQuery results = datastore.prepare(query);
         
