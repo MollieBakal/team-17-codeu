@@ -40,14 +40,14 @@ public class AdvisorsServlet extends HttpServlet{
     }
 
     String user = userService.getCurrentUser().getEmail();
-    System.out.println(user);
+    //System.out.println(user);
 
 
 
     
     List<String> advisors = new ArrayList<String>();
 
-    User me = datastore.getUser(user)!=null);
+    User me = datastore.getUser(user);
     
 
 
