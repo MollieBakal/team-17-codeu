@@ -43,11 +43,8 @@ public class AdvisorsServlet extends HttpServlet{
     //System.out.println(user);
 
 
-
-    
-    List<String> advisors = new ArrayList<String>();
-
     User me = datastore.getUser(user);
+    List<String> advisors = new ArrayList<String>();
     
 
 
