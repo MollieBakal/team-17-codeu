@@ -49,8 +49,11 @@ public class Request{
     return this.status;
   }
 
-  public void setStatus(int newStatus){
-    this.status = newStatus;
+  public void accept(){
+    this.status = 1;
+  }
+  public void deny(){
+    this.status = 2;
   }
 
 } 

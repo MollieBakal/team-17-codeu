@@ -83,6 +83,8 @@ public class Datastore {
     return requestHelper("getAllRequests", requests, query, results);
   }
 
+
+
   public List<Request> requestHelper(String userOrAll, List<Request> requests, Query query, PreparedQuery results) {
     for (Entity entity : results.asIterable()) {
       try {
@@ -114,6 +116,36 @@ public class Datastore {
     return requests;
   }
 
+  public Request getRequestByID(String parentID){
+
+   Query query = new Query("Request")
+    .setFilter(new Query.FilterPredicate("UUID", FilterOperator.EQUAL, parentID));
+  PreparedQuery results = datastore.prepare(query);
+  Key parent = KeyFactory.createKey("Request", parentID);
+    
+    try{
+        Entity requestEntity = datastore.get(parent);
+
+        String requestee = (String) requestEntity.getProperty("requestee");
+        String requester = (String) requestEntity.getProperty("requester");
+        long timestamp = (long) requestEntity.getProperty("timestamp");
+        long status = (long) requestEntity.getProperty("status");
+        UUID id = UUID.fromString(parentID);
+
+        //System.out.println(requestee);
+        //System.out.println(requester);
+        Request request = new Request(id,requester,requestee,timestamp,status);
+        return request;
+
+    }catch(Exception e){
+        System.out.println("Not Found");
+        e.printStackTrace();
+    }
+    return null;
+
+    
+  }
+  
 
 
 
@@ -255,8 +287,8 @@ public class Datastore {
   if(userEntity == null) {return null; }
   String aboutMe = (String) userEntity.getProperty("aboutMe");
      List<String> friends = Arrays.asList(((String) userEntity.getProperty("friends")).split(" "));
-                                          String fn = (String) userEntity.getProperty("firstName");
-                                          String ln = (String) userEntity.getProperty("lastName");
+      String fn = (String) userEntity.getProperty("firstName");
+      String ln = (String) userEntity.getProperty("lastName");
   User user = new User(email, fn, ln, aboutMe, friends);
   return user;
 

@@ -22,7 +22,6 @@ import com.google.appengine.api.users.UserServiceFactory;
 @WebServlet("/advisors")
 public class AdvisorsServlet extends HttpServlet{
   private Datastore datastore;
-  UserService userService = UserServiceFactory.getUserService();
 
   @Override
   public void init() {
@@ -34,20 +33,21 @@ public class AdvisorsServlet extends HttpServlet{
    throws IOException {
    response.setContentType("application/json");
 
-   String user = userService.getCurrentUser().getEmail();
-
-    if (user == null || user.equals("")) {
-      // Request is invalid, return empty array
-      response.getWriter().println("[]");
+   UserService userService = UserServiceFactory.getUserService();
+    if (!userService.isUserLoggedIn()) {
+      response.sendRedirect("/index.html");
       return;
     }
+
+    String user = userService.getCurrentUser().getEmail();
+    System.out.println(user);
+
+
 
     
     List<String> advisors = new ArrayList<String>();
 
-    if(datastore.getUser(user)!=null){
-      advisors=datastore.getUser(user).getFriends();
-    }
+    User me = datastore.getUser(user)!=null);
     
 
 
@@ -57,9 +57,4 @@ public class AdvisorsServlet extends HttpServlet{
 
  }
 
-
-
- public void addAdvisor(String requester){
-    Request req = new Request(userService.getCurrentUser().getEmail(),requester);
- }
 }

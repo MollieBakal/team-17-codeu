@@ -19,11 +19,11 @@
   <script  type="text/javascript" src="js/advisors.js">
   </script>
   <script>fetchAdvisors();</script>
-  <script>buildAdvElement(advString);</script>
   <script>fetchRequests();</script>
-  <script>buildReqElement(request);</script>  
   <script>buildUI();</script>
+
   <body onload="buildUI()">
+    <h2>Your Advisors:</h2>
   <div id="advisors-container">Loading...</div>
   <div>
     <h2>Request new advisors:</h2>
@@ -34,6 +34,7 @@
     </form>
 
   </div>
-  <div id="requests-container">Loading...</div>
+  <h2>Your Requests:</h2>
+  <div id="requests-container"></div>
 </body>
 
