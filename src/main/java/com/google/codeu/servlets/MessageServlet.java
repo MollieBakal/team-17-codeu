@@ -19,6 +19,7 @@ package com.google.codeu.servlets;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.codeu.data.Datastore;
+import com.google.codeu.data.User;
 import com.google.codeu.data.Message;
 import com.google.codeu.data.Question;
 import com.google.gson.Gson;
@@ -61,8 +62,11 @@ public class MessageServlet extends HttpServlet {
       response.getWriter().println("[]");
       return;
     }
-
-    List<Question> messages = datastore.getQuestions(user);
+      User me = datastore.getUser(user);
+      System.out.println(me.toString());
+      List<String> advs = me.getAdvisees();
+      advs.add(user);
+    List<Question> messages = datastore.getFriendQuestions(advs);
       for (Question question : messages){
           List<Message> kids = new ArrayList<>();
           for (UUID id : question.getAnswers()){
@@ -93,6 +97,9 @@ public class MessageServlet extends HttpServlet {
 
     Question message = new Question(user, text);
     datastore.storeQuestion(message);
+      
+    User userU = new User(user, null);
+    datastore.storeUser(userU);
 
     response.sendRedirect("/user-page.html?user=" + user);
   }

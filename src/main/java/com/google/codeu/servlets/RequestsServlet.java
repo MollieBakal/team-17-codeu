@@ -1,6 +1,7 @@
 package com.google.codeu.servlets;
 
 import com.google.codeu.data.Datastore;
+import com.google.codeu.data.User;
 import com.google.codeu.data.Request;
 import com.google.gson.Gson;
 import java.io.IOException;
@@ -43,7 +44,8 @@ public class RequestsServlet extends HttpServlet{
     }
 
     
-
+    User userU = new User(user, null);
+    datastore.storeUser(userU);
     List<Request> incomingRequests = datastore.getAllRequests();
 
 
@@ -64,7 +66,8 @@ public class RequestsServlet extends HttpServlet{
     }
 
     String user = userService.getCurrentUser().getEmail();
-
+    User userU = new User(user, null);
+    datastore.storeUser(userU);
     
     if(request.getParameterMap().containsKey("text")){
       String advisor = request.getParameter("text");

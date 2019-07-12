@@ -257,13 +257,28 @@ public class Datastore {
  /** Stores the User in Datastore. */
 
  public void storeUser(User user) {
-
+     User doublecheck = getUser(user.getEmail());
+     if(doublecheck != null){
+         if(user.getAboutMe() == null && doublecheck.getAboutMe() != null){
+             user.setAboutMe(doublecheck.getAboutMe());
+         }
+         if(user.getFirstName() == null && doublecheck.getFirstName() != null){
+             user.setFirstName(doublecheck.getFirstName());
+         }
+         if(user.getLastName() == null && doublecheck.getLastName() != null){
+             user.setLastName(doublecheck.getLastName());
+         }
+         if(user.getAdvisees() == null && doublecheck.getAdvisees() != null){
+             user.setAdvisees(doublecheck.getAdvisees());
+         }
+             
+     }
   Entity userEntity = new Entity("User", user.getEmail());
   userEntity.setProperty("email", user.getEmail());
   userEntity.setProperty("aboutMe", user.getAboutMe());
      userEntity.setProperty("firstName", user.getFirstName());
      userEntity.setProperty("lastName", user.getLastName());
-     userEntity.setProperty("friends", user.getFriendsToString());
+     userEntity.setProperty("advisees", user.getFriendsToString());
   datastore.put(userEntity);
 
  }
@@ -286,10 +301,10 @@ public class Datastore {
   Entity userEntity = results.asSingleEntity();
   if(userEntity == null) {return null; }
   String aboutMe = (String) userEntity.getProperty("aboutMe");
-     List<String> friends = Arrays.asList(((String) userEntity.getProperty("friends")).split(" "));
+     List<String> advisees = Arrays.asList(((String) userEntity.getProperty("advisees")).split(" "));
       String fn = (String) userEntity.getProperty("firstName");
       String ln = (String) userEntity.getProperty("lastName");
-  User user = new User(email, fn, ln, aboutMe, friends);
+  User user = new User(email, fn, ln, aboutMe, advisees);
   return user;
 
  }
@@ -376,6 +391,22 @@ public int getLongestMessage(){
         PreparedQuery results = datastore.prepare(query);
         
         return questionHelper(user, messages, query, results);
+    }
+    
+    public List<Question> getFriendQuestions(List<String> advisees) {
+        List<Question> messages = new ArrayList<Question>();
+        List<Query.Filter> filters = new ArrayList<Query.Filter>();
+        for(String adv : advisees){
+            filters.add(new Query.FilterPredicate("user", FilterOperator.EQUAL, adv));
+        }
+        Query query =
+        new Query("Question")
+        //The setFilter line was here originally but not in the Step 3 provided code
+        .setFilter(new Query.CompositeFilter(Query.CompositeFilterOperator.AND, filters))
+        .addSort("timestamp", SortDirection.DESCENDING);
+        PreparedQuery results = datastore.prepare(query);
+        
+        return questionHelper("getAllMessages", messages, query, results);
     }
     
     

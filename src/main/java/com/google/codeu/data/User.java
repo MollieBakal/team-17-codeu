@@ -15,7 +15,7 @@ public class User {
   private String aboutMe;
   private Image profilePic;
   
-  private List<String> friends = new ArrayList<String>();
+  private List<String> advisees = new ArrayList<String>();
 
   public User(UUID id, String firstName, String lastName, String email, String aboutMe, Image profilePic, List<String> friends) {
     this.id = id;
@@ -24,7 +24,7 @@ public class User {
     this.email = email;
     this.aboutMe = aboutMe;
     this.profilePic = profilePic;
-      this.friends = friends;
+      this.advisees = friends;
   }
   //for compatibility with datastore
     public User(String email, String aboutMe){
@@ -57,22 +57,30 @@ public class User {
   public Image getProfilePic() {
     return profilePic;
   }
-    public List<String> getFriends(){
-        return friends;
+    public List<String> getAdvisees(){
+        return advisees;
     }
     
-    public void addFriend(String email){
-        this.friends.add(email);
+    public void addAdvisee(String email){
+        this.advisees.add(email);
     }
     
-    public void setFriends(List<String> newFriends){
-        this.friends = newFriends;
-        
+    public void setAdvisees(List<String> newFriends){
+        this.advisees = newFriends;
+    }
+    public void setAboutMe(String newAM){
+        this.aboutMe = newAM;
+    }
+    public void setFirstName(String fn){
+        this.firstName = fn;
+    }
+    public void setLastName(String ln){
+        this.lastName = ln;
     }
     public String getFriendsToString(){
         String frie = "";
-	if ((this.friends).size() > 0){
-          for(String fr: this.friends){
+	if ((this.advisees).size() > 0){
+          for(String fr: this.advisees){
             frie += fr;
             frie += " ";
           }
