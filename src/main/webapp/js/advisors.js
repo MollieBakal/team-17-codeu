@@ -9,24 +9,49 @@ if (!parameterUsername) {
 //Fetch advisors and requests and display them
 
 function fetchAdvisors() {
-  const url = '/advisors?user=' + parameterUsername;
+  const url = '/requests';
   fetch(url).then((response) => {
     return response.json();
-  }).then((advisors) => {
+  }).then((requests) => {
     const advisorsContainer = document.getElementById('advisors-container');
-
-
-    if (advisors.length == 0 || advisors == "") {
-      advisorsContainer.innerHTML = '<p>You have no advisors yet.</p>';
-    }
-    else {
-      advisorsContainer.innerHTML = '<p> Your advisors: </p>';
-    }
-    advisors.forEach((advisor) => {
-      const advisorDiv = buildAdvElement(advisor);
-      advisorsContainer.appendChild(advisorDiv);
+    var check=0;
+    advisorsContainer.innerHTML= 'You have no advisors.';
+    var repeats=[];
+    
+    requests.forEach((request) => {
+      if (request.requester == parameterUsername && request.requestee != request.requester && request.status == 1) {
+        if (check == 0){advisorsContainer.innerHTML= '';}
+        if(!repeats.includes(request.requestee)){
+        repeats[check]=request.requestee;
+        check++;
+        const advisorDiv = buildAdvElement(request.requestee);
+        advisorsContainer.appendChild(advisorDiv);
+      }
+      }
     });
-
+  });
+}
+function fetchAdvisees(){
+  const url = '/requests';
+  fetch(url).then((response) => {
+    return response.json();
+  }).then((requests) => {
+    const adviseesContainer = document.getElementById('advisees-container');
+    var check=0;
+    adviseesContainer.innerHTML= 'You have no advisees.';
+    var repeats=[];
+    
+    requests.forEach((request) => {
+      if (request.requestee == parameterUsername && request.requestee != request.requester && request.status == 1) {
+        if (check == 0){adviseesContainer.innerHTML= '';}
+        if(!repeats.includes(request.requester)){
+        repeats[check]=request.requester;
+        check++;
+        const advisorDiv = buildAdvElement(request.requester);
+        adviseesContainer.appendChild(advisorDiv);
+      }
+      }
+    });
   });
 }
 
@@ -113,6 +138,7 @@ function buildReqElement(request) {
 
 // Fetch data and populate the UI of the page.
 function buildUI() {
+  fetchAdvisees();
   fetchAdvisors();
   fetchRequests();
 }

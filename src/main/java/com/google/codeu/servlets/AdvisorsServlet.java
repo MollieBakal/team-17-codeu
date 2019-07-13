@@ -40,19 +40,16 @@ public class AdvisorsServlet extends HttpServlet{
     }
 
     String user = userService.getCurrentUser().getEmail();
-    //System.out.println(user);
 
-
-
-    
-    List<String> advisors = new ArrayList<String>();
 
     User me = datastore.getUser(user);
-    
-
+    List<String> advisors = new ArrayList<String>();
+    advisors = me.getAdvisors();
+   /* List<String> advisees = new ArrayList<String>();
+    advisees = me.getAdvisees();*/
 
    Gson gson = new Gson();
-    String json = gson.toJson(advisors);
+    String json = gson.toJson(advisors); //+ gson.toJson(advisees) ;
     response.getOutputStream().println(json);
 
  }
