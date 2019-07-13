@@ -70,6 +70,18 @@ public class Datastore {
 
     return requestHelper(requestee, requests, query, results);
   }
+    public List<Request> getOutgoingRequests(String requester) {
+        List<Request> requests = new ArrayList<Request>();
+        
+        Query query =
+        new Query("Request")
+        //The setFilter line was here originally but not in the Step 3 provided code
+        .setFilter(new Query.FilterPredicate("requester", FilterOperator.EQUAL, requester))
+        .addSort("timestamp", SortDirection.DESCENDING);
+        PreparedQuery results = datastore.prepare(query);
+        
+        return requestHelper("getAllRequests", requests, query, results);
+    }
 
   public List<Request> getAllRequests() {
     List<Request> requests = new ArrayList<Request>();
@@ -268,20 +280,21 @@ public class Datastore {
          if(user.getLastName() == null && doublecheck.getLastName() != null){
              user.setLastName(doublecheck.getLastName());
          }
-         if(user.getAdvisees() == null && doublecheck.getAdvisees() != null){
+         /*if(user.getAdvisees() == null && doublecheck.getAdvisees() != null){
              user.setAdvisees(doublecheck.getAdvisees());
          }
          if(user.getAdvisors() == null && doublecheck.getAdvisors() != null){
              user.setAdvisors(doublecheck.getAdvisors());
-         }    
+         }
+          */
      }
   Entity userEntity = new Entity("User", user.getEmail());
   userEntity.setProperty("email", user.getEmail());
   userEntity.setProperty("aboutMe", user.getAboutMe());
      userEntity.setProperty("firstName", user.getFirstName());
      userEntity.setProperty("lastName", user.getLastName());
-     userEntity.setProperty("advisees", user.getAdviseesToString());
-     userEntity.setProperty("advisors", user.getAdvisorsToString());
+     //userEntity.setProperty("advisees", user.getAdviseesToString());
+     //userEntity.setProperty("advisors", user.getAdvisorsToString());
   datastore.put(userEntity);
 
  }
@@ -304,11 +317,11 @@ public class Datastore {
   Entity userEntity = results.asSingleEntity();
   if(userEntity == null) {return null; }
   String aboutMe = (String) userEntity.getProperty("aboutMe");
-      ArrayList<String> advisees = new ArrayList<String>(Arrays.asList(((String) userEntity.getProperty("advisees")).split(" ")));
-      ArrayList<String> advisors = new ArrayList<String>(Arrays.asList(((String) userEntity.getProperty("advisors")).split(" ")));
+      //ArrayList<String> advisees = new ArrayList<String>(Arrays.asList(((String) userEntity.getProperty("advisees")).split(" ")));
+      //ArrayList<String> advisors = new ArrayList<String>(Arrays.asList(((String) userEntity.getProperty("advisors")).split(" ")));
       String fn = (String) userEntity.getProperty("firstName");
       String ln = (String) userEntity.getProperty("lastName");
-  User user = new User(email, fn, ln, aboutMe, advisees, advisors);
+  User user = new User(email, fn, ln, aboutMe);
   return user;
 
  }
@@ -375,6 +388,7 @@ public int getLongestMessage(){
         messageEntity.setProperty("text", message.getText());
         messageEntity.setProperty("timestamp", message.getTimestamp());
         messageEntity.setProperty("children", message.getKidsToString());
+        messageEntity.setProperty("privacy", message.getAccess());
         datastore.put(messageEntity);
     }
     
@@ -400,13 +414,19 @@ public int getLongestMessage(){
     public List<Question> getFriendQuestions(List<String> advisees) {
         List<Question> messages = new ArrayList<Question>();
         List<Query.Filter> filters = new ArrayList<Query.Filter>();
+        List<Query.Filter> privacies = new ArrayList<Query.Filter>();
+        filters.add(new Query.FilterPredicate("user", FilterOperator.EQUAL, ""));
         for(String adv : advisees){
             filters.add(new Query.FilterPredicate("user", FilterOperator.EQUAL, adv));
         }
+        privacies.add(new Query.FilterPredicate("privacy", FilterOperator.EQUAL, 1));
+        privacies.add(new Query.FilterPredicate("privacy", FilterOperator.EQUAL, 2));
         Query query =
         new Query("Question")
+        .setFilter(new Query.CompositeFilter(Query.CompositeFilterOperator.AND,Arrays.asList(
+            new Query.CompositeFilter(Query.CompositeFilterOperator.OR, filters),
+            new Query.CompositeFilter(Query.CompositeFilterOperator.OR, privacies))))
         //The setFilter line was here originally but not in the Step 3 provided code
-        .setFilter(new Query.CompositeFilter(Query.CompositeFilterOperator.OR, filters))
         .addSort("timestamp", SortDirection.DESCENDING);
         PreparedQuery results = datastore.prepare(query);
         
@@ -429,8 +449,9 @@ public int getLongestMessage(){
             String text = (String) entity.getProperty("text");
             long timestamp = (long) entity.getProperty("timestamp");
             String kids = (String) entity.getProperty("children");
+            long access = (long) entity.getProperty("privacy");
             
-            Question message = new Question(id, user, text, timestamp);
+            Question message = new Question(id, user, text, timestamp, access);
             
             if (kids.length() > 0){
                 List<UUID> children = new ArrayList<>();
@@ -453,8 +474,12 @@ public int getLongestMessage(){
     
     public List<Question> getAllQuestions(){
         List<Question> messages = new ArrayList<Question>();
+        List<Query.Filter> privacies = new ArrayList<Query.Filter>();
+        privacies.add(new Query.FilterPredicate("privacy", FilterOperator.EQUAL, 1));
+        privacies.add(new Query.FilterPredicate("privacy", FilterOperator.EQUAL, 0));
         
         Query query = new Query("Question")
+        .setFilter(new Query.CompositeFilter(Query.CompositeFilterOperator.OR, privacies))
         .addSort("timestamp", SortDirection.DESCENDING);
         PreparedQuery results = datastore.prepare(query);
         
@@ -479,8 +504,9 @@ public int getLongestMessage(){
                 String text = (String) entity.getProperty("text");
                 long timestamp = (long) entity.getProperty("timestamp");
                 String kids = (String) entity.getProperty("children");
+                long privacy = (long) entity.getProperty("privacy");
                 
-                Question message = new Question(id, user, text, timestamp);
+                Question message = new Question(id, user, text, timestamp, privacy);
                 if (kids == null){
                     kids = "";
                 }

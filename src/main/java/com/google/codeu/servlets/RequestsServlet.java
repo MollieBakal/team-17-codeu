@@ -89,7 +89,8 @@ public class RequestsServlet extends HttpServlet{
         if(yesOrNo.equals("Accept")){
           //System.out.println("yes");
           aRequest.accept();
-          User requestee = datastore.getUser(user);
+          /*
+	  User requestee = datastore.getUser(user);
           requestee.addAdvisee(requester);
           datastore.storeUser(requestee);
           
@@ -97,6 +98,7 @@ public class RequestsServlet extends HttpServlet{
           User requestor = datastore.getUser(requester);
           requestor.addAdvisor(user);
           datastore.storeUser(requestor);
+	  */
 
         }
         else{

@@ -35,13 +35,13 @@
     <script id="answerhead" type="text/html">
         <form id="answer-form" action="/answers" method="POST">
         </script>
+    
         <script id="formbody" type="text/html">
-        
         Enter a response:
         <br/>
         <textarea name="text" id="message-input"></textarea>
-        <br/>
         <input type="submit" value="Submit">
+        
         </form>
     </script>
     <body onload="buildUI();">
@@ -66,6 +66,12 @@
             <br/>
             <textarea name="text" id="message-input"></textarea>
             <br/>
+            <input type="radio" name="privacy" value="public" checked> Public
+                <br/>
+                <input type="radio" name="privacy" value="private"> Private
+                    <br/>
+                    <input type="radio" name="privacy" value="both"> Both
+                        <br/>
             <input type="submit" value="Submit">
                 </form>
         <hr/>
