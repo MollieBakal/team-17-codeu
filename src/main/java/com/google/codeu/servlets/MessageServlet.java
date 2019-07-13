@@ -22,6 +22,7 @@ import com.google.codeu.data.Datastore;
 import com.google.codeu.data.User;
 import com.google.codeu.data.Message;
 import com.google.codeu.data.Question;
+import com.google.codeu.data.Request;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.List;
@@ -62,9 +63,13 @@ public class MessageServlet extends HttpServlet {
       response.getWriter().println("[]");
       return;
     }
-      User me = datastore.getUser(user);
-      System.out.println(me.toString());
-      List<String> advs = me.getAdvisees();
+      List<Request> myRequests = datastore.getOutgoingRequests(user);
+      //User me = datastore.getUser(user);
+      //System.out.println(me.toString());
+      //List<String> advs = me.getAdvisees();
+      List<String> advs =
+      
+      
       advs.add(user);
     List<Question> messages = datastore.getFriendQuestions(advs);
       for (Question question : messages){
@@ -94,8 +99,22 @@ public class MessageServlet extends HttpServlet {
     Whitelist whitelist = Whitelist.simpleText();
     whitelist.addTags("ins", "strike", "sub", "sup");
     String text = Jsoup.clean(request.getParameter("text"), whitelist);
-
-    Question message = new Question(user, text);
+      int acc = -1;
+      switch(request.getParameter("privacy")){
+          case "public":
+              acc = 0;
+              break;
+          case "private":
+              acc = 2;
+              break
+          case "both":
+              acc = 1;
+              break;
+          default:
+              acc = 1;
+              
+      }
+    Question message = new Question(user, text, acc);
     datastore.storeQuestion(message);
       
     User userU = new User(user, null);

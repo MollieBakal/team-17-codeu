@@ -371,6 +371,7 @@ public int getLongestMessage(){
         messageEntity.setProperty("text", message.getText());
         messageEntity.setProperty("timestamp", message.getTimestamp());
         messageEntity.setProperty("children", message.getKidsToString());
+        messageEntity.setProperty("privacy", message.getAccess());
         datastore.put(messageEntity);
     }
     
@@ -425,8 +426,9 @@ public int getLongestMessage(){
             String text = (String) entity.getProperty("text");
             long timestamp = (long) entity.getProperty("timestamp");
             String kids = (String) entity.getProperty("children");
+            int access = (int) entity.getProperty("privacy");
             
-            Question message = new Question(id, user, text, timestamp);
+            Question message = new Question(id, user, text, timestamp, access);
             
             if (kids.length() > 0){
                 List<UUID> children = new ArrayList<>();
@@ -475,8 +477,9 @@ public int getLongestMessage(){
                 String text = (String) entity.getProperty("text");
                 long timestamp = (long) entity.getProperty("timestamp");
                 String kids = (String) entity.getProperty("children");
+                int privacy = (int) entity.getProperty("privacy");
                 
-                Question message = new Question(id, user, text, timestamp);
+                Question message = new Question(id, user, text, timestamp, privacy);
                 if (kids == null){
                     kids = "";
                 }
