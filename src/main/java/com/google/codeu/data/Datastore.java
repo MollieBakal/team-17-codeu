@@ -271,14 +271,17 @@ public class Datastore {
          if(user.getAdvisees() == null && doublecheck.getAdvisees() != null){
              user.setAdvisees(doublecheck.getAdvisees());
          }
-             
+         if(user.getAdvisors() == null && doublecheck.getAdvisors() != null){
+             user.setAdvisors(doublecheck.getAdvisors());
+         }    
      }
   Entity userEntity = new Entity("User", user.getEmail());
   userEntity.setProperty("email", user.getEmail());
   userEntity.setProperty("aboutMe", user.getAboutMe());
      userEntity.setProperty("firstName", user.getFirstName());
      userEntity.setProperty("lastName", user.getLastName());
-     userEntity.setProperty("advisees", user.getFriendsToString());
+     userEntity.setProperty("advisees", user.getAdviseesToString());
+     userEntity.setProperty("advisors", user.getAdvisorsToString());
   datastore.put(userEntity);
 
  }
@@ -301,10 +304,11 @@ public class Datastore {
   Entity userEntity = results.asSingleEntity();
   if(userEntity == null) {return null; }
   String aboutMe = (String) userEntity.getProperty("aboutMe");
-     ArrayList<String> advisees = new ArrayList<String>(Arrays.asList(((String) userEntity.getProperty("advisees")).split(" ")));
+      ArrayList<String> advisees = new ArrayList<String>(Arrays.asList(((String) userEntity.getProperty("advisees")).split(" ")));
+      ArrayList<String> advisors = new ArrayList<String>(Arrays.asList(((String) userEntity.getProperty("advisors")).split(" ")));
       String fn = (String) userEntity.getProperty("firstName");
       String ln = (String) userEntity.getProperty("lastName");
-  User user = new User(email, fn, ln, aboutMe, advisees);
+  User user = new User(email, fn, ln, aboutMe, advisees, advisors);
   return user;
 
  }
