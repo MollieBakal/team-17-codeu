@@ -13,23 +13,23 @@ public class Question extends Message{
     //if datastore supported custom types this would be so much easier
     //but there we go, wishing for things. If I had a pony...
     private List<Message> tempHack = new ArrayList<Message>();
-    private int access = 1;
+    private long access = 1;
     //0 is public, 1 is both, 2 is private
     
     public Question(String user, String text) {
         super(user, text);
     }
-    public Question(String user, String text, int access) {
+    public Question(String user, String text, long access) {
         super(user, text);
         this.access = access;
     }
     
-    public Question(UUID id, String user, String text, long timestamp, int access) {
+    public Question(UUID id, String user, String text, long timestamp, long access) {
         super(id, user, text, timestamp);
         this.access = access;
     }
     
-    public Question(UUID id, String user, String text, long timestamp, List<String> answers, int access) {
+    public Question(UUID id, String user, String text, long timestamp, List<String> answers, long access) {
         super(id, user, text, timestamp);
         for(String answer : answers){
             this.childIDs.add(UUID.fromString(answer));
@@ -61,11 +61,11 @@ public class Question extends Message{
         return strkid;
     }
     
-    public int getAccess(){
+    public long getAccess(){
         return access;
     }
     
-    public void setAccess(int stuff){
+    public void setAccess(long stuff){
         this.access = stuff;
     }
     //public String getUser(){

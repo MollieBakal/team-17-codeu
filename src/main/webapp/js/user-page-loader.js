@@ -93,7 +93,7 @@ function fetchQuestions() {
                            
                            const formdiv = document.createElement('div');
                            //This isn't working yet; adding it so I have something to work from later.
-                           formdiv.innerHTML = formdiv.innerHTML + document.getElementById('answerhead').innerHTML + '<input type="hidden" name="parent" value = "' + message.id + '"> ' + document.getElementById('formbody').innerHTML + document.getElementById('privacy');
+                           formdiv.innerHTML = formdiv.innerHTML + document.getElementById('answerhead').innerHTML + '<input type="hidden" name="parent" value = "' + message.id + '"> ' + document.getElementById('formbody').innerHTML;
                            messageDiv.appendChild(formdiv);
                            messagesContainer.appendChild(messageDiv);
                            });

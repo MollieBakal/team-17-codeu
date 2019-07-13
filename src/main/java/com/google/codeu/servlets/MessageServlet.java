@@ -63,14 +63,17 @@ public class MessageServlet extends HttpServlet {
       response.getWriter().println("[]");
       return;
     }
-      List<Request> myRequests = datastore.getOutgoingRequests(user);
+      List<Request> myRequests = datastore.getIncomingRequests(user);
       //User me = datastore.getUser(user);
       //System.out.println(me.toString());
       //List<String> advs = me.getAdvisees();
-      List<String> advs =
-      
-      
+      ArrayList<String> advs = new ArrayList<String>();
       advs.add(user);
+      for(Request req : myRequests){
+          if(req.getStatus() == 1){
+              advs.add(req.getRequester());
+          }
+      }
     List<Question> messages = datastore.getFriendQuestions(advs);
       for (Question question : messages){
           List<Message> kids = new ArrayList<>();
@@ -99,14 +102,14 @@ public class MessageServlet extends HttpServlet {
     Whitelist whitelist = Whitelist.simpleText();
     whitelist.addTags("ins", "strike", "sub", "sup");
     String text = Jsoup.clean(request.getParameter("text"), whitelist);
-      int acc = -1;
+      long acc = -1;
       switch(request.getParameter("privacy")){
           case "public":
               acc = 0;
               break;
           case "private":
               acc = 2;
-              break
+              break;
           case "both":
               acc = 1;
               break;
