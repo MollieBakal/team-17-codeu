@@ -421,11 +421,15 @@ public int getLongestMessage(){
         }
         privacies.add(new Query.FilterPredicate("privacy", FilterOperator.EQUAL, 1));
         privacies.add(new Query.FilterPredicate("privacy", FilterOperator.EQUAL, 2));
+        Query.CompositeFilter friends = new Query.CompositeFilter(Query.CompositeFilterOperator.AND, Arrays.asList(
+                new Query.CompositeFilter(Query.CompositeFilterOperator.OR, filters),
+                new Query.CompositeFilter(Query.CompositeFilterOperator.OR, privacies)));
+        Query.CompositeFilter you = new Query.CompositeFilter(Query.CompositeFilterOperator.AND,Arrays.asList(
+                new Query.FilterPredicate("user", FilterOperator.EQUAL, advisees.get(0)),
+                new Query.FilterPredicate("privacy", FilterOperator.EQUAL, 0)));
         Query query =
         new Query("Question")
-        .setFilter(new Query.CompositeFilter(Query.CompositeFilterOperator.AND,Arrays.asList(
-            new Query.CompositeFilter(Query.CompositeFilterOperator.OR, filters),
-            new Query.CompositeFilter(Query.CompositeFilterOperator.OR, privacies))))
+        .setFilter(new Query.CompositeFilter(Query.CompositeFilterOperator.OR, Arrays.asList(friends, you)))
         //The setFilter line was here originally but not in the Step 3 provided code
         .addSort("timestamp", SortDirection.DESCENDING);
         PreparedQuery results = datastore.prepare(query);
