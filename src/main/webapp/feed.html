@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<link rel="stylesheet" href="/css/main.css">
-<link rel="stylesheet" href="/css/user-page.css">
-<header>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/user-page.css">
+  <header>
     <h1 class="logo">Public Feed</h1>
     <input type="checkbox" id="nav-toggle" class="nav-toggle">
     <nav>
@@ -13,21 +14,21 @@
       </ul>
     </nav>
     <label for="nav-toggle" class="nav-toggle-label">
-        <span></span>
-      </label>
-</header>
+      <span></span>
+    </label>
+  </header>
 
-<script  type="text/javascript" src="js/feed.js"></script>
-<script>fetchMessages();</script>
-<script>buildMessageDiv(message);</script>
-<script>buildUI();</script>
+  <script type="text/javascript" src="js/feed.js"></script>
+  <script>fetchMessages();</script>
+  <script>buildMessageDiv(message);</script>
+  <script>buildUI();</script>
 
 </head>
 <script id="answerhead" type="text/html">
     <form id="answer-form" action="/answers" method="POST">
     </script>
 <script id="formbody" type="text/html">
-    
+
     Enter a response:
     <br/>
     <textarea name="text" id="message-input"></textarea>
@@ -35,11 +36,13 @@
     <input type="submit" value="Submit">
     </form>
     </script>
+
 <body onload="buildUI()">
- <div id="content">
-  <h1>Message Feed</h1>
-  <hr/>
-  <div id="message-container">Loading...</div>
- </div>
+  <div id="content">
+    <h1>Message Feed</h1>
+    <hr />
+    <div id="message-container">Loading...</div>
+  </div>
 </body>
+
 </html>
