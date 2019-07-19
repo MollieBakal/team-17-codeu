@@ -121,8 +121,8 @@ nav {
   left: 0;
   /* Uses bacground color value created above */
   background: var(--background);
-  /* Allows the nav bar to take up the whole width of the screen */
-  width: 100%;
+  /* Allows the nav bar to take up the a % of the width of the screen */
+  width: 95%;
   /* Sets width to 100% but height at 0% */
   transform: scale(1, 0);
   /* Transitions in the menu items from the top*/
