@@ -13,9 +13,9 @@ body {
 	margin: 10px;
 	font-family: 'Work Sans', sans-serif;
   font-weight: 400;
-  background-image: url('https://unsplash.com/photos/LFjxCbhs0QM');
+  /*background-image: url('https://unsplash.com/photos/LFjxCbhs0QM');
   background-blend-mode: multiply;
-  background-size: cover;
+  background-size: cover;*/
 }
 
 ul{
@@ -23,14 +23,14 @@ ul{
   margin:0; padding:0;
 }
 
-ul li {
-  /*background: rgb(238, 238, 238);*/
+/*ul li {
+  background: rgb(238, 238, 238);
   padding: 2em;
   border-radius: 4px;
   margin-bottom: 7px;
   display: grid;
   grid-template-columns: 60px auto;
-}
+}*/
 
 ul li p {
   font-weight: bold;
