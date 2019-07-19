@@ -59,7 +59,6 @@ function buildMessageDiv(message) {
 
   const headerDiv = document.createElement('div');
   headerDiv.classList.add('message-header');
-  headerDiv.appendChild(usernameDiv);
   headerDiv.appendChild(timeDiv);
 
   const bodyDiv = document.createElement('div');
