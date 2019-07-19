@@ -129,6 +129,7 @@ function buildAnonDiv(message) {
   headerDiv.classList.add('message-header');
   if (message.user == parameterUsername) {
     headerDiv.appendChild(document.createTextNode(message.user + ' - ' + new Date(message.timestamp)));
+      headerDiv.style.backgroundColor = "#82DCFF";
   } else {
     headerDiv.appendChild(document.createTextNode(new Date(message.timestamp)));
   }
@@ -136,7 +137,7 @@ function buildAnonDiv(message) {
   const bodyDiv = document.createElement('div');
   bodyDiv.classList.add('message-body');
   bodyDiv.innerHTML = message.text;
-  bodyDiv.style.backgroundColor = "#82DCFF";
+  
 
   const messageDiv = document.createElement('div');
   messageDiv.classList.add('message-div');
