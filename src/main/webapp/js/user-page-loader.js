@@ -34,70 +34,70 @@ function setPageTitle() {
  */
 function showMessageFormIfViewingSelf() {
   fetch('/login-status')
-      .then((response) => {
-        return response.json();
-      })
-      .then((loginStatus) => {
-        if (loginStatus.isLoggedIn &&
-            loginStatus.username == parameterUsername) {
-            const aboutmeForm = document.getElementById('about-me-form');
-            aboutmeForm.classList.remove('hidden');
-          const messageForm = document.getElementById('message-form');
-          messageForm.classList.remove('hidden');
-          
-        }
-      });
-    
-    
+    .then((response) => {
+      return response.json();
+    })
+    .then((loginStatus) => {
+      if (loginStatus.isLoggedIn &&
+        loginStatus.username == parameterUsername) {
+        const aboutmeForm = document.getElementById('about-me-form');
+        aboutmeForm.classList.remove('hidden');
+        const messageForm = document.getElementById('message-form');
+        messageForm.classList.remove('hidden');
+
+      }
+    });
+
+
 }
 
 /** Fetches messages and add them to the page. */
 function fetchMessages() {
   const url = '/messages?user=' + parameterUsername;
   fetch(url)
-      .then((response) => {
-        return response.json();
-      })
-      .then((messages) => {
-        const messagesContainer = document.getElementById('message-container');
-        if (messages.length == 0) {
-          messagesContainer.innerHTML = '<p>This user has no posts yet.</p>';
-        } else {
-          messagesContainer.innerHTML = '';
-        }
-        messages.forEach((message) => {
-          const messageDiv = buildMessageDiv(message);
-          messagesContainer.appendChild(messageDiv);
-        });
+    .then((response) => {
+      return response.json();
+    })
+    .then((messages) => {
+      const messagesContainer = document.getElementById('message-container');
+      if (messages.length == 0) {
+        messagesContainer.innerHTML = '<p>This user has no posts yet.</p>';
+      } else {
+        messagesContainer.innerHTML = '';
+      }
+      messages.forEach((message) => {
+        const messageDiv = buildMessageDiv(message);
+        messagesContainer.appendChild(messageDiv);
       });
+    });
 }
 
 function fetchQuestions() {
-    const url = '/messages?user=' + parameterUsername;
-    fetch(url)
+  const url = '/messages?user=' + parameterUsername;
+  fetch(url)
     .then((response) => {
-          return response.json();
-          })
+      return response.json();
+    })
     .then((messages) => {
-          const messagesContainer = document.getElementById('message-container');
-          if (messages.length == 0) {
-          messagesContainer.innerHTML = '<p>This user has no posts yet.</p>';
-          } else {
-          messagesContainer.innerHTML = '';
-          }
-          messages.forEach((message) => {
-                           const messageDiv = buildAnonDiv(message);
-                           message.tempHack.forEach((answer) => {
-                                                   messageDiv.appendChild(buildMessageDiv(answer))
-                                                   });
-                           
-                           const formdiv = document.createElement('div');
-                           //This isn't working yet; adding it so I have something to work from later.
-                           formdiv.innerHTML = formdiv.innerHTML + document.getElementById('answerhead').innerHTML + '<input type="hidden" name="parent" value = "' + message.id + '"> ' + document.getElementById('formbody').innerHTML;
-                           messageDiv.appendChild(formdiv);
-                           messagesContainer.appendChild(messageDiv);
-                           });
-          });
+      const messagesContainer = document.getElementById('message-container');
+      if (messages.length == 0) {
+        messagesContainer.innerHTML = '<p>This user has no posts yet.</p>';
+      } else {
+        messagesContainer.innerHTML = '';
+      }
+      messages.forEach((message) => {
+        const messageDiv = buildAnonDiv(message);
+        message.tempHack.forEach((answer) => {
+          messageDiv.appendChild(buildMessageDiv(answer))
+        });
+
+        const formdiv = document.createElement('div');
+        //This isn't working yet; adding it so I have something to work from later.
+        formdiv.innerHTML = formdiv.innerHTML + document.getElementById('answerhead').innerHTML + '<input type="hidden" name="parent" value = "' + message.id + '"> ' + document.getElementById('formbody').innerHTML;
+        messageDiv.appendChild(formdiv);
+        messagesContainer.appendChild(messageDiv);
+      });
+    });
 }
 
 /**
@@ -109,11 +109,12 @@ function buildMessageDiv(message) {
   const headerDiv = document.createElement('div');
   headerDiv.classList.add('message-header');
   headerDiv.appendChild(document.createTextNode(
-      message.user + ' - ' + new Date(message.timestamp)));
+    message.user + ' - ' + new Date(message.timestamp)));
 
   const bodyDiv = document.createElement('div');
   bodyDiv.classList.add('message-body');
   bodyDiv.innerHTML = message.text;
+  bodyDiv.style.backgroundColor = "#82DCFF";
 
   const messageDiv = document.createElement('div');
   messageDiv.classList.add('message-div');
@@ -124,38 +125,38 @@ function buildMessageDiv(message) {
 }
 
 function buildAnonDiv(message) {
-    const headerDiv = document.createElement('div');
-    headerDiv.classList.add('message-header');
-    if(message.user == parameterUsername){
-        headerDiv.appendChild(document.createTextNode(message.user + ' - ' + new Date(message.timestamp)));
-    }else{
-        headerDiv.appendChild(document.createTextNode(new Date(message.timestamp)));
-    }
-    
-    
-    const bodyDiv = document.createElement('div');
-    bodyDiv.classList.add('message-body');
-    bodyDiv.innerHTML = message.text;
-    
-    const messageDiv = document.createElement('div');
-    messageDiv.classList.add('message-div');
-    messageDiv.appendChild(headerDiv);
-    messageDiv.appendChild(bodyDiv);
-    
-    return messageDiv;
+  const headerDiv = document.createElement('div');
+  headerDiv.classList.add('message-header');
+  if (message.user == parameterUsername) {
+    headerDiv.appendChild(document.createTextNode(message.user + ' - ' + new Date(message.timestamp)));
+  } else {
+    headerDiv.appendChild(document.createTextNode(new Date(message.timestamp)));
+  }
+
+  const bodyDiv = document.createElement('div');
+  bodyDiv.classList.add('message-body');
+  bodyDiv.innerHTML = message.text;
+  bodyDiv.style.backgroundColor = "#82DCFF";
+
+  const messageDiv = document.createElement('div');
+  messageDiv.classList.add('message-div');
+  messageDiv.appendChild(headerDiv);
+  messageDiv.appendChild(bodyDiv);
+
+  return messageDiv;
 }
 
-function fetchAboutMe(){
-    const url = '/about?user=' + parameterUsername;
-    fetch(url).then((response) => {
-        return response.text();
-        }).then((aboutMe) => {
-            const aboutMeContainer = document.getElementById('about-me-container');
-            if(aboutMe == ''){
-               aboutMe = 'This user has not entered any information yet.';
-            }
-            aboutMeContainer.innerHTML = aboutMe;
-            });
+function fetchAboutMe() {
+  const url = '/about?user=' + parameterUsername;
+  fetch(url).then((response) => {
+    return response.text();
+  }).then((aboutMe) => {
+    const aboutMeContainer = document.getElementById('about-me-container');
+    if (aboutMe == '') {
+      aboutMe = 'This user has not entered any information yet.';
+    }
+    aboutMeContainer.innerHTML = aboutMe;
+  });
 }
 
 /** Fetches data and populates the UI of the page. */

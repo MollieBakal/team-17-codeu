@@ -12,8 +12,38 @@ body {
   padding-top: 25px;
 	margin: 10px;
 	font-family: 'Work Sans', sans-serif;
-	font-weight: 400;
+  font-weight: 400;
+  /*background-image: url('https://unsplash.com/photos/LFjxCbhs0QM');
+  background-blend-mode: multiply;
+  background-size: cover;*/
 }
+
+ul{
+  list-style-type: none;
+  margin:0; padding:0;
+}
+
+/*ul li {
+  background: rgb(238, 238, 238);
+  padding: 2em;
+  border-radius: 4px;
+  margin-bottom: 7px;
+  display: grid;
+  grid-template-columns: 60px auto;
+}*/
+
+ul li p {
+  font-weight: bold;
+  margin-left: 20px;
+}
+
+/*.content {
+  background-image: url(//unsplash.it/1000/1000);https://unsplash.com/photos/LFjxCbhs0QM);
+  height: 200vh;
+  background-blend-mode: multiply;
+  background-size: cover;
+  display: grid;
+}*/
 
 /* Navigation related styles below */
 
@@ -169,7 +199,7 @@ nav a:hover {
     left: initial;
     /* end Edge support stuff */
     
-    grid-column: 3 / 4;
+    grid-column: 3 / 5;
     /* Moves nav info to the center of the grid space it occupies */
     display: flex;
     justify-content: flex-end;

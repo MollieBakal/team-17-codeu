@@ -1,36 +1,39 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <link rel="stylesheet" href="/css/main.css">
-    <header>
-          <h1 class="logo">Community Page</h1>
-          <input type="checkbox" id="nav-toggle" class="nav-toggle">
-          <nav>
-            <ul id="navigation">
-              <script src="/js/navigation-loader.js"></script>
-              <script>addLoginOrLogoutLinkToNavigation();</script>
-            </ul>
-          </nav>
-          <label for="nav-toggle" class="nav-toggle-label">
-              <span></span>
-            </label>
-    </header>
 
-    <script  type="text/javascript" src="js/community.js">
-  
- </script>
+<head>
+  <link rel="stylesheet" href="/css/main.css">
+  <header>
+    <h1 class="logo">Community Page</h1>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle">
+    <nav>
+      <ul id="navigation">
+        <script src="/js/navigation-loader.js"></script>
+        <script>addLoginOrLogoutLinkToNavigation();</script>
+      </ul>
+    </nav>
+    <label for="nav-toggle" class="nav-toggle-label">
+      <span></span>
+    </label>
+  </header>
+
+  <script type="text/javascript" src="js/community.js">
+
+  </script>
 
   <script>fetchUserList();</script>
   <script>buildUserListItem(user);</script>
   <script>buildUI();</script>
 
-  </head>
-  <body onload="buildUI()">
-    <div id="content">
-      <h1>Community Page</h1>
-      <p>Here is a list of every user who has posted a message:</p>
-      <hr/>
-      <ul id="list">Loading...</ul>
-    </div>
-  </body>
+</head>
+
+<body onload="buildUI()">
+  <div id="content">
+    <h1>Community Page</h1>
+    <p>Here is a list of every user who has posted a message:</p>
+    <hr />
+    <ul id="list">Loading...</ul>
+  </div>
+</body>
+
 </html>

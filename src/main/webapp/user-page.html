@@ -13,30 +13,31 @@
 
 <!DOCTYPE html>
 <html>
-    <head>
-            <header>
-                    <h1 class="logo">Your Page</h1>
-                    <input type="checkbox" id="nav-toggle" class="nav-toggle">
-                    <nav>
-                      <ul id="navigation">
-                        <script src="/js/navigation-loader.js"></script>
-                        <script>addLoginOrLogoutLinkToNavigation();</script>
-                      </ul>
-                    </nav>
-                    <label for="nav-toggle" class="nav-toggle-label">
-                        <span></span>
-                      </label>
-              </header>
-        <meta charset="UTF-8">
-            <link rel="stylesheet" href="/css/main.css">
-                <link rel="stylesheet" href="/css/user-page.css">
-                    <script src="/js/user-page-loader.js"></script>
-                    </head>
-    <script id="answerhead" type="text/html">
+
+<head>
+    <header>
+        <h1 class="logo">Your Page</h1>
+        <input type="checkbox" id="nav-toggle" class="nav-toggle">
+        <nav>
+            <ul id="navigation">
+                <script src="/js/navigation-loader.js"></script>
+                <script>addLoginOrLogoutLinkToNavigation();</script>
+            </ul>
+        </nav>
+        <label for="nav-toggle" class="nav-toggle-label">
+            <span></span>
+        </label>
+    </header>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/user-page.css">
+    <script src="/js/user-page-loader.js"></script>
+</head>
+<script id="answerhead" type="text/html">
         <form id="answer-form" action="/answers" method="POST">
         </script>
-    
-        <script id="formbody" type="text/html">
+
+<script id="formbody" type="text/html">
         Enter a response:
         <br/>
         <textarea name="text" id="message-input"></textarea>
@@ -44,39 +45,41 @@
         
         </form>
     </script>
-    <body onload="buildUI();">
-        <h1 id="page-title">User Page</h1>
-        <div id="about-me-container">Loading...</div>
-        
-        <div id="about-me-form" class="hidden">
-            
-            <form action="/about" method="POST">
-                
-                <textarea name="about-me" placeholder="about me" rows=4 required></textarea>
-                
-                <br/>
-                
-                <input type="submit" value="Submit">
-                    
-                    </form>
-            
-        </div>
-        <form id="message-form" action="/messages" method="POST" class="hidden">
-            Enter a new question:
-            <br/>
-            <textarea name="text" id="message-input"></textarea>
-            <br/>
-            <input type="radio" name="privacy" value="public" checked> Public
-                <br/>
-                <input type="radio" name="privacy" value="private"> Private
-                    <br/>
-                    <input type="radio" name="privacy" value="both"> Both
-                        <br/>
+
+<body onload="buildUI();">
+    <h1 id="page-title">User Page</h1>
+    <div id="about-me-container">Loading...</div>
+
+    <div id="about-me-form" class="hidden">
+
+        <form action="/about" method="POST">
+
+            <textarea name="about-me" placeholder="about me" rows=4 required></textarea>
+
+            <br />
+
             <input type="submit" value="Submit">
-                </form>
-        <hr/>
-        
-        <div id="message-container">Loading...</div>
-        
-    </body>
+
+        </form>
+
+    </div>
+    <form id="message-form" action="/messages" method="POST" class="hidden">
+        Enter a new question:
+        <br />
+        <textarea name="text" id="message-input"></textarea>
+        <br />
+        <input type="radio" name="privacy" value="public" checked> Public
+        <br />
+        <input type="radio" name="privacy" value="private"> Private
+        <br />
+        <input type="radio" name="privacy" value="both"> Both
+        <br />
+        <input type="submit" value="Submit">
+    </form>
+    <hr />
+
+    <div id="message-container">Loading...</div>
+
+</body>
+
 </html>
