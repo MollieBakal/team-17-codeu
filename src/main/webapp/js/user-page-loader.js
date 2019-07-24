@@ -158,8 +158,21 @@ function fetchAboutMe() {
   });
 }
 
+function onlyShowOwnPage() {
+    fetch('/login-status').then((response) => {
+                                return response.json();
+                                })
+    .then((loginStatus) => {
+          if (!loginStatus.isLoggedIn || !(loginStatus.username == parameterUsername)) {
+          window.location.replace('/');
+          }
+        });
+    
+}
+
 /** Fetches data and populates the UI of the page. */
-function buildUI() {
+function buildUI(){
+          onlyShowOwnPage();
   setPageTitle();
   showMessageFormIfViewingSelf();
   fetchQuestions();

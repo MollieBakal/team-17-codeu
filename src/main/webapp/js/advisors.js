@@ -136,9 +136,23 @@ function buildReqElement(request) {
   return reqElement;
 }
 
-// Fetch data and populate the UI of the page.
-function buildUI() {
+function onlyShowOwnPage() {
+    fetch('/login-status').then((response) => {
+                                return response.json();
+                                })
+    .then((loginStatus) => {
+          if (!loginStatus.isLoggedIn || !(loginStatus.username == parameterUsername)) {
+          window.location.replace('/');
+          }
+        });
+
+}
+          
+    /** Fetches data and populates the UI of the page. */
+  function buildUI(){
+  onlyShowOwnPage();
   fetchAdvisees();
   fetchAdvisors();
   fetchRequests();
+          
 }
