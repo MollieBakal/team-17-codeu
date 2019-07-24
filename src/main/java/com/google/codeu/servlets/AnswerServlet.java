@@ -53,8 +53,12 @@ public class AnswerServlet extends HttpServlet{
         parent.addAnswer(message);
         datastore.storeQuestion(parent);
         datastore.storeMessage(message);
-        response.sendRedirect("/user-page.html?user=" + user);
+        System.out.println(request.getParameter("page"));
+        if (request.getParameter("page").equals("feed")){
+            response.sendRedirect("/feed.html");
+        }else{
+            response.sendRedirect("/user-page.html?user=" + user);
+        }
         
-
     }
 }
